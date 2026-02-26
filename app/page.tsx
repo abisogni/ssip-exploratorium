@@ -1,22 +1,39 @@
+import SpaceLoader from '@/components/SpaceLoader'
+
 export default function Home() {
   return (
-    <main className="min-h-screen bg-black text-white flex flex-col items-center justify-center px-6">
-      <div className="max-w-xl w-full text-center space-y-6">
-        <p className="text-sm uppercase tracking-widest text-gray-500">
-          SSIP — Experimental
-        </p>
-        <h1 className="text-4xl font-bold tracking-tight">The Exploratorium</h1>
-        <p className="text-gray-400 text-lg leading-relaxed">
-          A space for prototypes, hackathon projects, and ideas worth testing.
-          Not everything here is finished. That&apos;s the point.
-        </p>
-        <a
-          href="https://www.ssip-pl.ch"
-          className="inline-block text-sm text-gray-600 hover:text-white transition-colors"
+    <main className="relative w-screen h-screen overflow-hidden bg-black">
+      <SpaceLoader />
+
+      {/* Title overlay — pointer-events-none so clicks pass through to the canvas */}
+      <div
+        className="absolute inset-0 flex flex-col items-center pointer-events-none"
+        style={{ paddingTop: '11vh' }}
+      >
+        <p
+          className="text-xs tracking-[0.4em] uppercase mb-4"
+          style={{ color: 'rgba(100,160,255,0.5)' }}
         >
-          ssip-pl.ch
-        </a>
+          SSIP &mdash; Experimental
+        </p>
+        <h1
+          className="text-white font-black uppercase"
+          style={{
+            fontSize: 'clamp(2rem, 6vw, 5.5rem)',
+            letterSpacing: '0.22em',
+            textShadow:
+              '0 0 60px rgba(80,140,255,0.45), 0 0 20px rgba(80,140,255,0.2)',
+          }}
+        >
+          The Exploratorium
+        </h1>
+        <p
+          className="mt-5 text-xs tracking-[0.3em] uppercase"
+          style={{ color: 'rgba(255,255,255,0.18)' }}
+        >
+          Explore at your own risk
+        </p>
       </div>
     </main>
-  );
+  )
 }
