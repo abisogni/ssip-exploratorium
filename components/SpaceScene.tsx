@@ -7,8 +7,8 @@ import * as THREE from 'three'
 const PLANETS = [
   {
     slug: '/palabras',
-    color: 0x1a3d8b,
-    emissive: 0x050e2a,
+    color: 0x2255cc,
+    emissive: 0x0a1a60,
     roughness: 0.35,
     metalness: 0.05,
     radius: 0.75,
@@ -16,11 +16,13 @@ const PLANETS = [
     orbitSpeed: 0.00032,
     startAngle: 1.2,
     rings: false,
+    orbitIncl: 0.2,   // gentle tilt
+    orbitNode: 0.0,
   },
   {
     slug: '/event_log',
-    color: 0x8b2c14,
-    emissive: 0x2a0800,
+    color: 0xb03318,
+    emissive: 0x4a0e00,
     roughness: 0.82,
     metalness: 0.0,
     radius: 0.92,
@@ -28,11 +30,13 @@ const PLANETS = [
     orbitSpeed: 0.00022,
     startAngle: 2.8,
     rings: true,
+    orbitIncl: 0.65,  // steep tilt ~37°
+    orbitNode: 1.4,
   },
   {
     slug: '/afkkwpd',
-    color: 0x0e5c3e,
-    emissive: 0x021a0f,
+    color: 0x148c54,
+    emissive: 0x043318,
     roughness: 0.55,
     metalness: 0.05,
     radius: 0.65,
@@ -40,11 +44,13 @@ const PLANETS = [
     orbitSpeed: 0.00016,
     startAngle: 0.5,
     rings: false,
+    orbitIncl: -0.45, // opposite tilt direction
+    orbitNode: 2.6,
   },
   {
     slug: '/dev_branch',
-    color: 0x7a5c14,
-    emissive: 0x221800,
+    color: 0xa87820,
+    emissive: 0x3d2400,
     roughness: 0.62,
     metalness: 0.15,
     radius: 0.82,
@@ -52,6 +58,8 @@ const PLANETS = [
     orbitSpeed: 0.0001,
     startAngle: 4.2,
     rings: false,
+    orbitIncl: 0.55,  // moderately tilted
+    orbitNode: 0.7,
   },
 ]
 
@@ -218,7 +226,7 @@ export default function SpaceScene() {
       const mat = new THREE.MeshStandardMaterial({
         color: p.color,
         emissive: p.emissive,
-        emissiveIntensity: 0.25,
+        emissiveIntensity: 0.55,
         roughness: p.roughness,
         metalness: p.metalness,
       })
@@ -242,13 +250,18 @@ export default function SpaceScene() {
       planetMeshes.push(mesh)
     })
 
-    // Faint orbit rings
+    // Faint orbit rings — each oriented to match its planet's orbit plane
     PLANETS.forEach((p) => {
       const torus = new THREE.Mesh(
         new THREE.TorusGeometry(p.orbitRadius, 0.012, 4, 180),
         new THREE.MeshBasicMaterial({ color: 0x223344, transparent: true, opacity: 0.2 })
       )
-      torus.rotation.x = Math.PI / 2
+      // Compute orbit plane normal: R_Y(node) * R_X(incl) * Y_hat
+      const n = new THREE.Vector3(0, 1, 0)
+      n.applyAxisAngle(new THREE.Vector3(1, 0, 0), p.orbitIncl)
+      n.applyAxisAngle(new THREE.Vector3(0, 1, 0), p.orbitNode)
+      // Torus default lies in XY plane, normal = Z. Rotate Z → n.
+      torus.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), n)
       scene.add(torus)
     })
 
@@ -278,19 +291,28 @@ export default function SpaceScene() {
       animId = requestAnimationFrame(animate)
       const t = clock.getElapsedTime()
 
-      // Astronaut slow spin + gentle drift
+      // Astronaut full 3D tumble — steady rotation on all axes simulates zero-g drift
       astronaut.rotation.y = t * 0.12
-      astronaut.rotation.x = Math.sin(t * 0.08) * 0.04
+      astronaut.rotation.x = t * 0.05
+      astronaut.rotation.z = t * 0.035
       astronaut.position.y = Math.sin(t * 0.28) * 0.28
 
-      // Planet orbits
+      // Planet orbits — each in its own inclined plane
       PLANETS.forEach((p, i) => {
         angles[i] += p.orbitSpeed
         const a = angles[i]
-        const tilt = 0.18
-        planetMeshes[i].position.x = Math.cos(a) * p.orbitRadius
-        planetMeshes[i].position.z = Math.sin(a) * p.orbitRadius * Math.cos(tilt) - 2
-        planetMeshes[i].position.y = Math.sin(a) * p.orbitRadius * Math.sin(tilt) * 0.55
+        const incl = p.orbitIncl
+        const node = p.orbitNode
+        // Start in XZ plane
+        const xOrb = Math.cos(a) * p.orbitRadius
+        const zOrb = Math.sin(a) * p.orbitRadius
+        // Apply inclination around X axis
+        const yInc = -zOrb * Math.sin(incl)
+        const zInc = zOrb * Math.cos(incl)
+        // Apply ascending node rotation around Y axis
+        planetMeshes[i].position.x = xOrb * Math.cos(node) + zInc * Math.sin(node)
+        planetMeshes[i].position.y = yInc
+        planetMeshes[i].position.z = -xOrb * Math.sin(node) + zInc * Math.cos(node) - 2
         planetMeshes[i].rotation.y += 0.004
       })
 
@@ -303,13 +325,13 @@ export default function SpaceScene() {
       const hits = raycaster.intersectObjects(planetMeshes)
 
       planetMeshes.forEach((m) => {
-        ;(m.material as THREE.MeshStandardMaterial).emissiveIntensity = 0.25
+        ;(m.material as THREE.MeshStandardMaterial).emissiveIntensity = 0.55
       })
 
       hovered = null
       if (hits.length > 0) {
         const hit = hits[0].object as THREE.Mesh
-        ;(hit.material as THREE.MeshStandardMaterial).emissiveIntensity = 1.4
+        ;(hit.material as THREE.MeshStandardMaterial).emissiveIntensity = 2.0
         hovered = hit
         renderer.domElement.style.cursor = 'pointer'
       } else {
