@@ -35,6 +35,31 @@ export async function fetchSpaceflightSearch(query: string): Promise<FeedPost[]>
   }
 }
 
+export async function fetchSpaceflightMultiSearch(terms: string[]): Promise<FeedPost[]> {
+  try {
+    const results = await Promise.all(
+      terms.map(term =>
+        fetch(`${BASE}?limit=4&ordering=-published_at&search=${encodeURIComponent(term)}`, CACHE)
+          .then(r => r.ok ? r.json() : { results: [] })
+          .then(d => (d.results ?? []).map(toPost))
+          .catch(() => [] as FeedPost[])
+      )
+    )
+    const merged = results.flat()
+    // Deduplicate by title
+    const seen = new Set<string>()
+    const deduped: FeedPost[] = []
+    for (const post of merged) {
+      const key = post.title.toLowerCase().trim()
+      if (!seen.has(key)) { seen.add(key); deduped.push(post) }
+    }
+    deduped.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    return deduped.slice(0, 10)
+  } catch {
+    return []
+  }
+}
+
 export async function fetchSpaceflightByAgency(newsSites: string[]): Promise<FeedPost[]> {
   try {
     const results = await Promise.all(

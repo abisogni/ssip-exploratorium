@@ -74,5 +74,6 @@ export async function fetchOpenAlexSwiss(): Promise<FeedPost[]> {
       deduped.push(post)
     }
   }
+  deduped.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
   return deduped
 }

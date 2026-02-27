@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server'
-import { fetchSpaceflightLatest, fetchSpaceflightSearch, fetchSpaceflightByAgency } from '@/lib/feeds/spaceflight'
+import { fetchSpaceflightLatest, fetchSpaceflightMultiSearch, fetchSpaceflightByAgency } from '@/lib/feeds/spaceflight'
 import { fetchArxiv } from '@/lib/feeds/arxiv'
 import { fetchPubMed } from '@/lib/feeds/pubmed'
 import { fetchOpenAlexSwiss } from '@/lib/feeds/openAlex'
+import { fetchCybersecurityNews } from '@/lib/feeds/cybersecurity'
 import { FeedPost } from '@/lib/feeds/types'
 
 export const revalidate = 21600
@@ -31,6 +32,10 @@ const SSIP_POSTS: FeedPost[] = [
   },
 ]
 
+function sortByDate(posts: FeedPost[]): FeedPost[] {
+  return posts.slice().sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+}
+
 export async function GET(
   _req: Request,
   { params }: { params: Promise<{ topicId: string }> }
@@ -44,7 +49,7 @@ export async function GET(
       posts = await fetchSpaceflightLatest()
       break
     case 'space-station':
-      posts = await fetchSpaceflightSearch('ISS OR space station OR Starlab OR Axiom')
+      posts = await fetchSpaceflightMultiSearch(['ISS', 'space station', 'Starlab', 'Axiom'])
       break
     case 'space-agencies':
       posts = await fetchSpaceflightByAgency(['NASA', 'ESA', 'JAXA', 'ISRO'])
@@ -62,7 +67,7 @@ export async function GET(
       posts = await fetchPubMed('pharmaceutical AND (space OR microgravity)')
       break
     case 'cybersecurity':
-      posts = await fetchSpaceflightSearch('cyber OR hack OR encryption OR quantum')
+      posts = await fetchCybersecurityNews()
       break
     case 'swiss-uni':
       posts = await fetchOpenAlexSwiss()
@@ -74,5 +79,5 @@ export async function GET(
       posts = []
   }
 
-  return NextResponse.json(posts)
+  return NextResponse.json(sortByDate(posts))
 }
