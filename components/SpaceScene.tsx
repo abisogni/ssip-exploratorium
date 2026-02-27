@@ -216,7 +216,7 @@ export default function SpaceScene() {
     // --- Astronaut ---
     const astronaut = buildAstronaut()
     astronaut.position.set(0, 0, 0)
-    astronaut.userData = { slug: 'https://ssip.ch', isAstronaut: true }
+    astronaut.userData = { slug: 'https://ssip-pl.ch/', isAstronaut: true }
     scene.add(astronaut)
 
     // --- Planets ---
