@@ -100,7 +100,7 @@ function CardItem({ card, rotation, hovered, topicLabel, onHover, onLeave, onCli
           transform: 'translateX(-50%)',
           whiteSpace: 'nowrap',
           fontFamily: "'Times New Roman', Times, serif",
-          fontSize: '0.65rem',
+          fontSize: '0.85rem',
           letterSpacing: '0.22em',
           textTransform: 'uppercase',
           color: 'rgba(222,148,18,0.97)',
@@ -133,7 +133,7 @@ export function DesktopGrid({ topics, onSelectTopic }: GridProps) {
           justifyContent: 'center',
           gap: '4%',
           width: '100%',
-          paddingBottom: '2.8rem', // breathing room for hover label
+          paddingBottom: '4.5rem', // breathing room for hover label
         }}
       >
         {cards.map((card, i) => {
