@@ -126,6 +126,41 @@ function buildAstronaut(): THREE.Group {
   return g
 }
 
+function buildSatellite(): THREE.Group {
+  const g = new THREE.Group()
+
+  // Main body - cylindrical
+  const bodyMat = new THREE.MeshPhongMaterial({
+    color: 0xcccccc,
+    specular: 0x444444,
+    shininess: 60,
+  })
+  const body = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.15, 0.4, 8), bodyMat)
+  body.rotation.z = Math.PI / 2
+
+  // Solar panels
+  const panelMat = new THREE.MeshPhongMaterial({
+    color: 0x1a3d5c,
+    specular: 0x6699cc,
+    shininess: 100,
+    emissive: 0x0a1a2d,
+  })
+
+  const leftPanel = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.6, 0.4), panelMat)
+  leftPanel.position.x = -0.35
+
+  const rightPanel = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.6, 0.4), panelMat)
+  rightPanel.position.x = 0.35
+
+  // Antenna
+  const antennaMat = new THREE.MeshPhongMaterial({ color: 0x888888, shininess: 80 })
+  const antenna = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.3, 6), antennaMat)
+  antenna.position.set(0, 0.35, 0)
+
+  g.add(body, leftPanel, rightPanel, antenna)
+  return g
+}
+
 export default function SpaceScene() {
   const mountRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
@@ -184,7 +219,7 @@ export default function SpaceScene() {
     }
 
     const starField = makeStars(8000, 500, 0.22, 0xffffff, 0.72)
-    const brightStars = makeStars(280, 500, 0.6, 0xbbddff, 0.88)
+    const brightStars = makeStars(280, 500, 0.32, 0xbbddff, 0.88)
     scene.add(starField, brightStars)
 
     // Nebula background blobs
@@ -218,6 +253,14 @@ export default function SpaceScene() {
     astronaut.position.set(0, 0, 0)
     astronaut.userData = { slug: 'https://ssip-pl.ch/', isAstronaut: true }
     scene.add(astronaut)
+
+    // --- Satellite ---
+    const satellite = buildSatellite()
+    satellite.scale.setScalar(0.8)
+    scene.add(satellite)
+    const satelliteOrbitRadius = 5.5
+    const satelliteOrbitSpeed = 0.00065
+    let satelliteAngle = 0.8
 
     // --- Planets ---
     const planetMeshes: THREE.Mesh[] = []
@@ -304,6 +347,14 @@ export default function SpaceScene() {
       astronaut.rotation.x = t * 0.05
       astronaut.rotation.z = t * 0.035
       astronaut.position.y = Math.sin(t * 0.28) * 0.28
+
+      // Satellite orbit — fast, close orbit
+      satelliteAngle += satelliteOrbitSpeed
+      satellite.position.x = Math.cos(satelliteAngle) * satelliteOrbitRadius
+      satellite.position.z = Math.sin(satelliteAngle) * satelliteOrbitRadius - 2
+      satellite.position.y = Math.sin(satelliteAngle * 2.3) * 0.6
+      satellite.rotation.y = t * 0.3
+      satellite.rotation.z = Math.sin(t * 0.4) * 0.15
 
       // Planet orbits — each in its own inclined plane
       PLANETS.forEach((p, i) => {
