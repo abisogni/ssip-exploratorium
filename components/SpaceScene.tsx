@@ -25,7 +25,7 @@ const PLANETS = [
     emissive: 0x4a0e00,
     roughness: 0.82,
     metalness: 0.0,
-    radius: 0.82,
+    radius: 0.82,  // Orange Saturn - smaller size
     orbitRadius: 12.8,
     orbitSpeed: 0.00019,
     startAngle: 3.14,
