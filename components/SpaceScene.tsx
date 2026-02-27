@@ -266,6 +266,7 @@ export default function SpaceScene() {
     // --- Satellite ---
     const satellite = buildSatellite()
     satellite.scale.setScalar(1.2)
+    satellite.userData = { slug: '/info-center', isSatellite: true }
     scene.add(satellite)
     const satelliteOrbitRadius = 5.5
     const satelliteOrbitSpeed = 0.00065
@@ -406,7 +407,7 @@ export default function SpaceScene() {
 
       // Raycasting
       raycaster.setFromCamera(mouse, camera)
-      const clickableObjects = [...planetMeshes, ...astronaut.children]
+      const clickableObjects = [...planetMeshes, ...astronaut.children, ...satellite.children]
       const hits = raycaster.intersectObjects(clickableObjects, false)
 
       planetMeshes.forEach((m) => {
@@ -427,6 +428,9 @@ export default function SpaceScene() {
           if ((hit as THREE.Mesh).userData.label) {
             ;(hit as THREE.Mesh).userData.label.style.visibility = 'visible'
           }
+        } else if (satellite.children.includes(hit as THREE.Mesh)) {
+          // It's part of the satellite
+          hovered = satellite
         } else {
           // It's part of the astronaut
           hovered = astronaut
