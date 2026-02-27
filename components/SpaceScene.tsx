@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import * as THREE from 'three'
+import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js'
 
 const PLANETS = [
   {
@@ -179,6 +180,14 @@ export default function SpaceScene() {
     renderer.setClearColor(0x00000a)
     mount.appendChild(renderer.domElement)
 
+    // Label renderer for planet names
+    const labelRenderer = new CSS2DRenderer()
+    labelRenderer.setSize(w, h)
+    labelRenderer.domElement.style.position = 'absolute'
+    labelRenderer.domElement.style.top = '0'
+    labelRenderer.domElement.style.pointerEvents = 'none'
+    mount.appendChild(labelRenderer.domElement)
+
     // Scene + Camera
     const scene = new THREE.Scene()
     const camera = new THREE.PerspectiveCamera(58, w / h, 0.1, 1000)
@@ -290,6 +299,22 @@ export default function SpaceScene() {
         mesh.add(ring)
       }
 
+      // Create label for this planet
+      const labelDiv = document.createElement('div')
+      labelDiv.textContent = p.slug.replace('/', '')
+      labelDiv.style.color = 'rgba(255, 255, 255, 0.9)'
+      labelDiv.style.fontFamily = "'Courier New', monospace"
+      labelDiv.style.fontSize = '14px'
+      labelDiv.style.padding = '4px 8px'
+      labelDiv.style.background = 'rgba(0, 0, 0, 0.6)'
+      labelDiv.style.borderRadius = '4px'
+      labelDiv.style.border = '1px solid rgba(255, 255, 255, 0.3)'
+      labelDiv.style.visibility = 'hidden'
+      const label = new CSS2DObject(labelDiv)
+      label.position.set(0, -p.radius - 0.8, 0)
+      mesh.add(label)
+      mesh.userData.label = labelDiv
+
       scene.add(mesh)
       planetMeshes.push(mesh)
     })
@@ -386,6 +411,9 @@ export default function SpaceScene() {
 
       planetMeshes.forEach((m) => {
         ;(m.material as THREE.MeshStandardMaterial).emissiveIntensity = 0.55
+        if (m.userData.label) {
+          m.userData.label.style.visibility = 'hidden'
+        }
       })
 
       hovered = null
@@ -395,6 +423,10 @@ export default function SpaceScene() {
         if (planetMeshes.includes(hit as THREE.Mesh)) {
           ;((hit as THREE.Mesh).material as THREE.MeshStandardMaterial).emissiveIntensity = 2.0
           hovered = hit
+          // Show label for hovered planet
+          if ((hit as THREE.Mesh).userData.label) {
+            ;(hit as THREE.Mesh).userData.label.style.visibility = 'visible'
+          }
         } else {
           // It's part of the astronaut
           hovered = astronaut
@@ -405,6 +437,7 @@ export default function SpaceScene() {
       }
 
       renderer.render(scene, camera)
+      labelRenderer.render(scene, camera)
     }
 
     animate()
@@ -416,6 +449,7 @@ export default function SpaceScene() {
       camera.aspect = nw / nh
       camera.updateProjectionMatrix()
       renderer.setSize(nw, nh)
+      labelRenderer.setSize(nw, nh)
     }
 
     window.addEventListener('resize', onResize)
@@ -428,6 +462,9 @@ export default function SpaceScene() {
       renderer.dispose()
       if (mount.contains(renderer.domElement)) {
         mount.removeChild(renderer.domElement)
+      }
+      if (mount.contains(labelRenderer.domElement)) {
+        mount.removeChild(labelRenderer.domElement)
       }
     }
   }, [router])
