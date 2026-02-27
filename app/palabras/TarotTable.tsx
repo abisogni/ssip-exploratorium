@@ -57,7 +57,7 @@ function CardItem({ card, rotation, hovered, topicLabel, onHover, onLeave, onCli
     <div
       style={{
         position: 'relative',
-        width: '15.4%',   // 12 % smaller than 17.5 %
+        width: '13.1%',   // 15% smaller than original
         flexShrink: 0,
         cursor: 'pointer',
         transform: hovered
