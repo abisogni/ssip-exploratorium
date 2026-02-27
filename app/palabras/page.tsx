@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import Link from 'next/link'
 import { DesktopGrid, MobileView } from './TarotTable'
 import BlogView from './BlogView'
 
@@ -182,6 +183,27 @@ export default function Palabras() {
             className="absolute inset-0"
             style={{ opacity: mobileCardsVisible ? 1 : 0, transition: 'opacity 0.8s' }}
           >
+            {/* Back link - mobile */}
+            <Link
+              href="/"
+              style={{
+                position: 'fixed',
+                top: '1.5rem',
+                right: '1.5rem',
+                fontFamily: "'Times New Roman', Times, serif",
+                fontSize: '0.7rem',
+                letterSpacing: '0.08em',
+                color: 'rgba(218,180,80,0.8)',
+                textDecoration: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.4rem',
+                zIndex: 20,
+              }}
+            >
+              <span style={{ fontSize: '1rem' }}>←</span>
+              <span>back</span>
+            </Link>
             <MobileView topics={TOPICS} onSelectTopic={handleSelectTopic} />
           </div>
         )}
@@ -258,6 +280,37 @@ export default function Palabras() {
 
           {/* Content sits above background layers */}
           <div style={{ position: 'relative', zIndex: 2 }}>
+
+            {/* Back link - upper right corner */}
+            <Link
+              href="/"
+              style={{
+                position: 'absolute',
+                top: '2rem',
+                right: '2rem',
+                fontFamily: "'Times New Roman', Times, serif",
+                fontSize: '0.8rem',
+                letterSpacing: '0.08em',
+                color: 'rgba(218,180,80,0.7)',
+                textDecoration: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                transition: 'color 0.2s ease, font-weight 0.2s ease',
+                zIndex: 10,
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = 'rgba(255,220,120,1)'
+                e.currentTarget.style.fontWeight = 'bold'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = 'rgba(218,180,80,0.7)'
+                e.currentTarget.style.fontWeight = 'normal'
+              }}
+            >
+              <span style={{ fontSize: '1.2rem' }}>←</span>
+              <span>back to Exploratorium space</span>
+            </Link>
 
             {/* Page header */}
             <div style={{ textAlign: 'center', paddingTop: '5vh', paddingBottom: '4vh' }}>

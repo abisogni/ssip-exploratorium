@@ -103,9 +103,11 @@ function CardItem({ card, rotation, hovered, topicLabel, onHover, onLeave, onCli
           fontSize: '0.85rem',
           letterSpacing: '0.22em',
           textTransform: 'uppercase',
-          color: 'rgba(222,148,18,0.97)',
+          color: hovered ? 'rgba(255,200,60,1)' : 'rgba(222,148,18,0.97)',
+          fontWeight: hovered ? 'bold' : 'normal',
+          textShadow: hovered ? '0 2px 12px rgba(255,180,30,0.6), 0 0 20px rgba(255,160,20,0.4)' : 'none',
           opacity: hovered ? 1 : 0,
-          transition: 'opacity 0.2s ease',
+          transition: 'opacity 0.2s ease, color 0.2s ease, font-weight 0.2s ease, text-shadow 0.2s ease',
           pointerEvents: 'none',
         }}
       >

@@ -12,9 +12,9 @@ const PLANETS = [
     roughness: 0.35,
     metalness: 0.05,
     radius: 0.75,
-    orbitRadius: 7.5,
-    orbitSpeed: 0.00032,
-    startAngle: 1.2,
+    orbitRadius: 8.5,
+    orbitSpeed: 0.00038,
+    startAngle: 0.0,
     rings: false,
     orbitIncl: 0.08,  // ~4.6°
     orbitNode: 0.0,
@@ -26,12 +26,12 @@ const PLANETS = [
     roughness: 0.82,
     metalness: 0.0,
     radius: 0.92,
-    orbitRadius: 11.2,
-    orbitSpeed: 0.00022,
-    startAngle: 2.8,
+    orbitRadius: 12.8,
+    orbitSpeed: 0.00019,
+    startAngle: 3.14,
     rings: true,
-    orbitIncl: 0.22,  // ~12.6°
-    orbitNode: 1.4,
+    orbitIncl: 0.25,  // ~14.3°
+    orbitNode: 2.1,
   },
   {
     slug: '/afkkwpd',
@@ -40,12 +40,12 @@ const PLANETS = [
     roughness: 0.55,
     metalness: 0.05,
     radius: 0.65,
-    orbitRadius: 14.8,
-    orbitSpeed: 0.00016,
-    startAngle: 0.5,
+    orbitRadius: 15.2,
+    orbitSpeed: 0.00013,
+    startAngle: 1.57,
     rings: false,
     orbitIncl: -0.15, // ~-8.6° (slight opposite dip)
-    orbitNode: 2.6,
+    orbitNode: 4.2,
   },
   {
     slug: '/dev_branch',
@@ -54,12 +54,12 @@ const PLANETS = [
     roughness: 0.62,
     metalness: 0.15,
     radius: 0.82,
-    orbitRadius: 18.8,
-    orbitSpeed: 0.0001,
-    startAngle: 4.2,
+    orbitRadius: 19.5,
+    orbitSpeed: 0.000085,
+    startAngle: 4.71,
     rings: false,
     orbitIncl: 0.18,  // ~10.3°
-    orbitNode: 0.7,
+    orbitNode: 5.5,
   },
 ]
 
@@ -216,6 +216,7 @@ export default function SpaceScene() {
     // --- Astronaut ---
     const astronaut = buildAstronaut()
     astronaut.position.set(0, 0, 0)
+    astronaut.userData = { slug: 'https://ssip.ch', isAstronaut: true }
     scene.add(astronaut)
 
     // --- Planets ---
@@ -268,7 +269,7 @@ export default function SpaceScene() {
     // --- Raycaster ---
     const raycaster = new THREE.Raycaster()
     const mouse = new THREE.Vector2(-2, -2)
-    let hovered: THREE.Mesh | null = null
+    let hovered: THREE.Object3D | null = null
 
     function onMouseMove(e: MouseEvent) {
       const rect = mount!.getBoundingClientRect()
@@ -277,7 +278,14 @@ export default function SpaceScene() {
     }
 
     function onClick() {
-      if (hovered) router.push(hovered.userData.slug as string)
+      if (hovered) {
+        const url = hovered.userData.slug as string
+        if (url.startsWith('http')) {
+          window.location.href = url
+        } else {
+          router.push(url)
+        }
+      }
     }
 
     mount.addEventListener('mousemove', onMouseMove)
@@ -322,7 +330,8 @@ export default function SpaceScene() {
 
       // Raycasting
       raycaster.setFromCamera(mouse, camera)
-      const hits = raycaster.intersectObjects(planetMeshes)
+      const clickableObjects = [...planetMeshes, ...astronaut.children]
+      const hits = raycaster.intersectObjects(clickableObjects, false)
 
       planetMeshes.forEach((m) => {
         ;(m.material as THREE.MeshStandardMaterial).emissiveIntensity = 0.55
@@ -330,9 +339,15 @@ export default function SpaceScene() {
 
       hovered = null
       if (hits.length > 0) {
-        const hit = hits[0].object as THREE.Mesh
-        ;(hit.material as THREE.MeshStandardMaterial).emissiveIntensity = 2.0
-        hovered = hit
+        const hit = hits[0].object
+        // Check if it's a planet
+        if (planetMeshes.includes(hit as THREE.Mesh)) {
+          ;((hit as THREE.Mesh).material as THREE.MeshStandardMaterial).emissiveIntensity = 2.0
+          hovered = hit
+        } else {
+          // It's part of the astronaut
+          hovered = astronaut
+        }
         renderer.domElement.style.cursor = 'pointer'
       } else {
         renderer.domElement.style.cursor = 'default'
