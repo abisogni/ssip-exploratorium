@@ -57,7 +57,7 @@ function CardItem({ card, rotation, hovered, topicLabel, onHover, onLeave, onCli
     <div
       style={{
         position: 'relative',
-        width: '13.1%',   // 15% smaller than original
+        width: '12%',
         flexShrink: 0,
         cursor: 'pointer',
         transform: hovered
@@ -131,7 +131,7 @@ export function DesktopGrid({ topics, onSelectTopic }: GridProps) {
         style={{
           display: 'flex',
           justifyContent: 'center',
-          gap: '2%',
+          gap: '4%',
           width: '100%',
           paddingBottom: '2.8rem', // breathing room for hover label
         }}
