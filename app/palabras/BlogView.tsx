@@ -248,7 +248,7 @@ export default function BlogView({ topic, onBack }: Props) {
           className="mb-10 transition-opacity hover:opacity-50"
           style={{
             fontFamily: "'Times New Roman', Times, serif",
-            fontSize: '0.7rem',
+            fontSize: '14px',
             letterSpacing: '0.22em',
             textTransform: 'uppercase',
             color: 'rgba(200,155,50,0.55)',
@@ -265,7 +265,7 @@ export default function BlogView({ topic, onBack }: Props) {
         <div className="mb-10">
           <p style={{
             fontFamily: "'Times New Roman', Times, serif",
-            fontSize: '0.65rem',
+            fontSize: '13px',
             letterSpacing: '0.25em',
             textTransform: 'uppercase',
             color: 'rgba(200,155,50,0.35)',
@@ -275,7 +275,7 @@ export default function BlogView({ topic, onBack }: Props) {
           </p>
           <h1 style={{
             fontFamily: "'Times New Roman', Times, serif",
-            fontSize: 'clamp(2rem, 5vw, 3.2rem)',
+            fontSize: 'clamp(32px, 5vw, 51px)',
             fontWeight: 'bold',
             color: 'rgba(220,185,100,0.92)',
             lineHeight: 1.1,
@@ -304,17 +304,17 @@ export default function BlogView({ topic, onBack }: Props) {
               }}>
                 <span style={{
                   fontFamily: "'Times New Roman', Times, serif",
-                  fontSize: '0.6rem',
+                  fontSize: '12px',
                   letterSpacing: '0.18em',
                   textTransform: 'uppercase',
                   color: 'rgba(200,155,50,0.55)',
                 }}>
                   {post.source}
                 </span>
-                <span style={{ color: 'rgba(200,155,50,0.25)', fontSize: '0.6rem' }}>·</span>
+                <span style={{ color: 'rgba(200,155,50,0.25)', fontSize: '12px' }}>·</span>
                 <span style={{
                   fontFamily: "'Times New Roman', Times, serif",
-                  fontSize: '0.65rem',
+                  fontSize: '12px',
                   color: 'rgba(200,155,50,0.45)',
                 }}>
                   {post.date}
@@ -322,7 +322,7 @@ export default function BlogView({ topic, onBack }: Props) {
               </div>
               <h2 style={{
                 fontFamily: "'Times New Roman', Times, serif",
-                fontSize: '1.15rem',
+                fontSize: '22px',
                 fontWeight: 'bold',
                 color: 'rgba(230,195,115,0.9)',
                 lineHeight: 1.35,
@@ -333,7 +333,7 @@ export default function BlogView({ topic, onBack }: Props) {
               </h2>
               <p style={{
                 fontFamily: "'Times New Roman', Times, serif",
-                fontSize: '0.88rem',
+                fontSize: '17px',
                 lineHeight: 1.75,
                 color: 'rgba(200,170,100,0.6)',
               }}>
@@ -349,7 +349,7 @@ export default function BlogView({ topic, onBack }: Props) {
           paddingTop: '1.5rem',
           borderTop: '1px solid rgba(180,130,40,0.15)',
           fontFamily: "'Times New Roman', Times, serif",
-          fontSize: '0.7rem',
+          fontSize: '13px',
           fontStyle: 'italic',
           textAlign: 'center',
           color: 'rgba(200,155,50,0.3)',
