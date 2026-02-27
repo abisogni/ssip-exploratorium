@@ -16,7 +16,7 @@ const PLANETS = [
     orbitSpeed: 0.00032,
     startAngle: 1.2,
     rings: false,
-    orbitIncl: 0.2,   // gentle tilt
+    orbitIncl: 0.08,  // ~4.6°
     orbitNode: 0.0,
   },
   {
@@ -30,7 +30,7 @@ const PLANETS = [
     orbitSpeed: 0.00022,
     startAngle: 2.8,
     rings: true,
-    orbitIncl: 0.65,  // steep tilt ~37°
+    orbitIncl: 0.22,  // ~12.6°
     orbitNode: 1.4,
   },
   {
@@ -44,7 +44,7 @@ const PLANETS = [
     orbitSpeed: 0.00016,
     startAngle: 0.5,
     rings: false,
-    orbitIncl: -0.45, // opposite tilt direction
+    orbitIncl: -0.15, // ~-8.6° (slight opposite dip)
     orbitNode: 2.6,
   },
   {
@@ -58,7 +58,7 @@ const PLANETS = [
     orbitSpeed: 0.0001,
     startAngle: 4.2,
     rings: false,
-    orbitIncl: 0.55,  // moderately tilted
+    orbitIncl: 0.18,  // ~10.3°
     orbitNode: 0.7,
   },
 ]
