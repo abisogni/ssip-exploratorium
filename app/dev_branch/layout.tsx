@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'dev_branch — The Exploratorium',
+  title: 'SSipHub',
 }
 
 export default function DevBranchLayout({ children }: { children: React.ReactNode }) {
