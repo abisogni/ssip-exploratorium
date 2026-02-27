@@ -256,7 +256,7 @@ export default function SpaceScene() {
 
     // --- Satellite ---
     const satellite = buildSatellite()
-    satellite.scale.setScalar(0.8)
+    satellite.scale.setScalar(1.2)
     scene.add(satellite)
     const satelliteOrbitRadius = 5.5
     const satelliteOrbitSpeed = 0.00065
