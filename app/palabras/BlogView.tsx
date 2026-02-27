@@ -307,15 +307,15 @@ export default function BlogView({ topic, onBack }: Props) {
                   fontSize: '12px',
                   letterSpacing: '0.18em',
                   textTransform: 'uppercase',
-                  color: 'rgba(200,155,50,0.55)',
+                  color: 'rgba(220,180,90,0.9)',
                 }}>
                   {post.source}
                 </span>
-                <span style={{ color: 'rgba(200,155,50,0.25)', fontSize: '12px' }}>·</span>
+                <span style={{ color: 'rgba(220,180,90,0.5)', fontSize: '12px' }}>·</span>
                 <span style={{
                   fontFamily: "'Times New Roman', Times, serif",
                   fontSize: '12px',
-                  color: 'rgba(200,155,50,0.45)',
+                  color: 'rgba(220,180,90,0.75)',
                 }}>
                   {post.date}
                 </span>
