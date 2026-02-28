@@ -5,19 +5,25 @@ import Link from 'next/link'
 
 // PUZZLES shifted 713 places (713 mod 26 = 11) → AFKKWPD
 const CIPHER_TITLE = 'AFKKWPD'
-const SCRAMBLE_POOL = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=!@#<>?|'
 
-type Phase = 'scramble' | 'hold' | 'shiver' | 'evaporate' | 'done'
+type Phase = 'hold' | 'dissolve' | 'done'
 type Theme = 'CRYPTO' | 'AI' | 'SPACE'
+
+// ── Per-letter dissolve values (stable — not computed at render time) ─────────
+// Each letter drifts independently: upward + slight lateral spread, staggered
+const LETTER_DISSOLVE: { delayMs: number; dx: number; dy: number; rotate: number }[] = [
+  { delayMs:  60, dx:  -9, dy: -18, rotate: -1.4 }, // A
+  { delayMs: 180, dx:  -4, dy: -22, rotate:  0.9 }, // F
+  { delayMs:  20, dx:   1, dy: -15, rotate: -0.6 }, // K
+  { delayMs: 250, dx:   6, dy: -20, rotate:  1.3 }, // K
+  { delayMs: 110, dx:  -6, dy: -25, rotate: -1.0 }, // W
+  { delayMs: 200, dx:   8, dy: -17, rotate:  1.7 }, // P
+  { delayMs:  40, dx:  12, dy: -13, rotate: -1.1 }, // D
+]
 
 // ── Puzzle registry ───────────────────────────────────────────────────────────
 
-const PUZZLES_DATA: {
-  id: string
-  title: string
-  theme: Theme
-  desc: string
-}[] = [
+const PUZZLES_DATA: { id: string; title: string; theme: Theme; desc: string }[] = [
   {
     id: 'cipher-room',
     title: 'The Cipher Room',
@@ -113,8 +119,7 @@ const GRAIN_URI =
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function Puzzles() {
-  const [display, setDisplay] = useState(CIPHER_TITLE)
-  const [phase, setPhase]     = useState<Phase>('scramble')
+  const [phase, setPhase]         = useState<Phase>('hold')
   const [hoveredId, setHoveredId] = useState<string | null>(null)
 
   const scrollRef   = useRef<HTMLDivElement>(null)
@@ -124,53 +129,28 @@ export default function Puzzles() {
   useEffect(() => {
     let active = true
     const timers: ReturnType<typeof setTimeout>[] = []
-    let scrambleInterval: ReturnType<typeof setInterval>
 
-    // Step 1 — scramble letters into CIPHER_TITLE (700ms)
-    let step = 0
-    const STEPS = 14
-    scrambleInterval = setInterval(() => {
+    // Hold for 1.4s, then dissolve
+    const t1 = setTimeout(() => {
       if (!active) return
-      step++
-      if (step >= STEPS) {
-        clearInterval(scrambleInterval)
-        setDisplay(CIPHER_TITLE)
-        // Step 2 — hold for 600ms
-        const t1 = setTimeout(() => {
-          if (!active) return
-          // Step 3 — shiver (2500ms)
-          setPhase('shiver')
-          const t2 = setTimeout(() => {
-            if (!active) return
-            // Step 4 — evaporate (750ms)
-            setPhase('evaporate')
-            const t3 = setTimeout(() => {
-              if (!active) return
-              setPhase('done')
-            }, 750)
-            timers.push(t3)
-          }, 2500)
-          timers.push(t2)
-        }, 600)
-        timers.push(t1)
-        return
-      }
-      const reveal = Math.floor((step / STEPS) * CIPHER_TITLE.length)
-      let result = CIPHER_TITLE.slice(0, reveal)
-      for (let i = reveal; i < CIPHER_TITLE.length; i++) {
-        result += SCRAMBLE_POOL[Math.floor(Math.random() * SCRAMBLE_POOL.length)]
-      }
-      setDisplay(result)
-    }, 50)
+      setPhase('dissolve')
+
+      // Dissolve takes ~1.6s (max letter delay 250ms + transition 1350ms)
+      const t2 = setTimeout(() => {
+        if (!active) return
+        setPhase('done')
+      }, 1600)
+      timers.push(t2)
+    }, 1400)
+    timers.push(t1)
 
     return () => {
       active = false
-      clearInterval(scrambleInterval)
       timers.forEach(clearTimeout)
     }
   }, [])
 
-  // Scroll to section 2 when animation completes
+  // Scroll to section 2 once done
   useEffect(() => {
     if (phase !== 'done') return
     const t = setTimeout(() => {
@@ -179,22 +159,6 @@ export default function Puzzles() {
     }, 280)
     return () => clearTimeout(t)
   }, [phase])
-
-  // ── Intro title style (driven by phase) ───────────────────────────────────
-  const titleStyle: React.CSSProperties = {
-    fontFamily: 'var(--font-geist-mono, monospace)',
-    fontSize: 'clamp(3rem, 10vw, 6.5rem)',
-    fontWeight: 700,
-    letterSpacing: '0.14em',
-    userSelect: 'none',
-    opacity:    phase === 'evaporate' ? 0    : 1,
-    filter:     phase === 'evaporate' ? 'blur(12px) brightness(2)' : 'none',
-    transform:  phase === 'evaporate' ? 'scale(1.08) translateY(-8px)' : 'scale(1) translateY(0)',
-    color:      'rgba(255,255,255,0.92)',
-    transition: phase === 'evaporate'
-      ? 'opacity 0.75s ease-in, filter 0.75s ease-in, transform 0.75s ease-in'
-      : 'none',
-  }
 
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
@@ -205,7 +169,7 @@ export default function Puzzles() {
         style={{ position: 'absolute', inset: 0, overflowY: 'scroll' }}
       >
 
-        {/* ── Section 1: Intro animation ── */}
+        {/* ── Section 1: Intro ── */}
         <div
           style={{
             height: '100vh',
@@ -223,32 +187,52 @@ export default function Puzzles() {
               letterSpacing: '0.38em',
               textTransform: 'uppercase',
               color: 'rgba(0,190,210,0.38)',
-              marginBottom: '1.4rem',
+              marginBottom: '1.6rem',
             }}
           >
             SSIP &mdash; Exploratorium
           </p>
 
+          {/* Per-letter dissolve title */}
           <h1
-            className={phase === 'shiver' ? 'puzzle-shiver' : ''}
-            style={titleStyle}
-          >
-            {display}
-          </h1>
-
-          <p
             style={{
               fontFamily: 'var(--font-geist-mono, monospace)',
-              fontSize: '0.58rem',
-              letterSpacing: '0.22em',
-              color: 'rgba(255,255,255,0.14)',
-              marginTop: '1.2rem',
-              opacity: phase === 'hold' || phase === 'shiver' || phase === 'evaporate' ? 1 : 0,
-              transition: 'opacity 0.6s',
+              fontSize: 'clamp(3rem, 10vw, 6.5rem)',
+              fontWeight: 700,
+              letterSpacing: '0.14em',
+              userSelect: 'none',
+              display: 'flex',
+              margin: 0,
             }}
           >
-            713-place shift cipher
-          </p>
+            {CIPHER_TITLE.split('').map((letter, i) => {
+              const d = LETTER_DISSOLVE[i]
+              const dissolving = phase === 'dissolve' || phase === 'done'
+              return (
+                <span
+                  key={i}
+                  style={{
+                    display: 'inline-block',
+                    color: 'rgba(255,255,255,0.92)',
+                    opacity:    dissolving ? 0 : 1,
+                    filter:     dissolving ? 'blur(18px)' : 'blur(0px)',
+                    transform:  dissolving
+                      ? `translateX(${d.dx}px) translateY(${d.dy}px) rotate(${d.rotate}deg) scale(1.25)`
+                      : 'translateX(0) translateY(0) rotate(0deg) scale(1)',
+                    transition: dissolving
+                      ? [
+                          `opacity 1.35s ${d.delayMs}ms ease-in`,
+                          `filter 1.2s ${d.delayMs}ms ease-in`,
+                          `transform 1.5s ${d.delayMs}ms ease-out`,
+                        ].join(', ')
+                      : 'none',
+                  }}
+                >
+                  {letter}
+                </span>
+              )
+            })}
+          </h1>
         </div>
 
         {/* ── Section 2: Puzzle cards ── */}
@@ -377,9 +361,7 @@ export default function Puzzles() {
                     onMouseEnter={() => setHoveredId(p.id)}
                     onMouseLeave={() => setHoveredId(null)}
                     style={{
-                      background: hovered
-                        ? `rgba(255,255,255,0.05)`
-                        : 'rgba(255,255,255,0.025)',
+                      background: hovered ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.025)',
                       border: `1px solid ${hovered ? THEME_BORDER[p.theme] : 'rgba(255,255,255,0.06)'}`,
                       borderRadius: '6px',
                       padding: '1.5rem 1.4rem',
@@ -391,7 +373,6 @@ export default function Puzzles() {
                         : 'none',
                     }}
                   >
-                    {/* Theme badge */}
                     <div style={{ marginBottom: '0.75rem' }}>
                       <span
                         style={{
@@ -407,7 +388,6 @@ export default function Puzzles() {
                       </span>
                     </div>
 
-                    {/* Title */}
                     <h2
                       style={{
                         fontFamily: 'var(--font-geist-mono, monospace)',
@@ -423,7 +403,6 @@ export default function Puzzles() {
                       {p.title}
                     </h2>
 
-                    {/* Description */}
                     <p
                       style={{
                         fontFamily: "'Times New Roman', Times, serif",
@@ -437,7 +416,6 @@ export default function Puzzles() {
                       {p.desc}
                     </p>
 
-                    {/* Status */}
                     <div
                       style={{
                         fontFamily: 'var(--font-geist-mono, monospace)',

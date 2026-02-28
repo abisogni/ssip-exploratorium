@@ -24,33 +24,6 @@
   display: none;
 }
 
-/* Puzzles intro — increasing-amplitude shiver */
-@keyframes puzzle-shiver {
-  0%   { transform: translate(0px,   0px)  rotate(0deg);    }
-  5%   { transform: translate(1px,  -1px)  rotate(0.05deg); }
-  10%  { transform: translate(-1px,  1px)  rotate(-0.05deg);}
-  15%  { transform: translate(2px,   1px)  rotate(0.1deg);  }
-  20%  { transform: translate(-2px, -1px)  rotate(-0.1deg); }
-  25%  { transform: translate(2px,   2px)  rotate(0.15deg); }
-  30%  { transform: translate(-3px,  1px)  rotate(-0.15deg);}
-  35%  { transform: translate(3px,  -2px)  rotate(0.2deg);  }
-  40%  { transform: translate(-3px,  2px)  rotate(-0.2deg); }
-  45%  { transform: translate(4px,  -3px)  rotate(0.25deg); }
-  50%  { transform: translate(-4px,  3px)  rotate(-0.3deg); }
-  55%  { transform: translate(5px,  -3px)  rotate(0.35deg); }
-  60%  { transform: translate(-5px,  4px)  rotate(-0.4deg); }
-  65%  { transform: translate(6px,  -4px)  rotate(0.45deg); }
-  70%  { transform: translate(-6px,  5px)  rotate(-0.5deg); }
-  75%  { transform: translate(7px,  -5px)  rotate(0.55deg); }
-  80%  { transform: translate(-7px,  6px)  rotate(-0.6deg); }
-  85%  { transform: translate(8px,  -6px)  rotate(0.65deg); }
-  90%  { transform: translate(-8px,  7px)  rotate(-0.7deg); }
-  95%  { transform: translate(9px,  -7px)  rotate(0.75deg); }
-  100% { transform: translate(-9px,  8px)  rotate(-0.8deg); }
-}
-.puzzle-shiver {
-  animation: puzzle-shiver 2.5s ease-in;
-}
 
 html,
 body {
