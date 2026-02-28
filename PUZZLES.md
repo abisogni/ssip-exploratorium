@@ -58,7 +58,7 @@ Given an encrypted substitution cipher, player decodes it by analyzing letter fr
 ---
 
 ### 3. Signal from Deep Space
-**Status:** `planned`
+**Status:** `shipped`
 
 **Concept:**
 Inspired by the 1974 Arecibo message. Player receives a raw binary transmission (a sequence of 1s and 0s). They must figure out the grid dimensions by factoring the length (prime factorization hint), arrange the bits into a 2D grid, and read the image that emerges.

@@ -23,7 +23,7 @@ const LETTER_DISSOLVE: { delayMs: number; dx: number; dy: number; rotate: number
 
 // ── Puzzle registry ───────────────────────────────────────────────────────────
 
-const PUZZLES_DATA: { id: string; title: string; theme: Theme; desc: string }[] = [
+const PUZZLES_DATA: { id: string; title: string; theme: Theme; desc: string; route?: string }[] = [
   {
     id: 'cipher-room',
     title: 'The Cipher Room',
@@ -41,6 +41,7 @@ const PUZZLES_DATA: { id: string; title: string; theme: Theme; desc: string }[] 
     title: 'Signal from Deep Space',
     theme: 'CRYPTO',
     desc: 'Reconstruct a binary transmission from deep space into a hidden image.',
+    route: '/puzzles/signal-deep-space',
   },
   {
     id: 'turing-or-not',
@@ -355,24 +356,22 @@ export default function Puzzles() {
             >
               {PUZZLES_DATA.map(p => {
                 const hovered = hoveredId === p.id
-                return (
-                  <div
-                    key={p.id}
-                    onMouseEnter={() => setHoveredId(p.id)}
-                    onMouseLeave={() => setHoveredId(null)}
-                    style={{
-                      background: hovered ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.025)',
-                      border: `1px solid ${hovered ? THEME_BORDER[p.theme] : 'rgba(255,255,255,0.06)'}`,
-                      borderRadius: '6px',
-                      padding: '1.5rem 1.4rem',
-                      cursor: 'default',
-                      transition: 'background 0.25s, border-color 0.25s, box-shadow 0.25s, transform 0.25s',
-                      transform: hovered ? 'translateY(-3px)' : 'translateY(0)',
-                      boxShadow: hovered
-                        ? `0 8px 32px ${THEME_GLOW[p.theme]}, 0 0 0 1px ${THEME_BORDER[p.theme]}`
-                        : 'none',
-                    }}
-                  >
+                const cardStyle: React.CSSProperties = {
+                  background: hovered ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.025)',
+                  border: `1px solid ${hovered ? THEME_BORDER[p.theme] : 'rgba(255,255,255,0.06)'}`,
+                  borderRadius: '6px',
+                  padding: '1.5rem 1.4rem',
+                  cursor: p.route ? 'pointer' : 'default',
+                  transition: 'background 0.25s, border-color 0.25s, box-shadow 0.25s, transform 0.25s',
+                  transform: hovered ? 'translateY(-3px)' : 'translateY(0)',
+                  boxShadow: hovered
+                    ? `0 8px 32px ${THEME_GLOW[p.theme]}, 0 0 0 1px ${THEME_BORDER[p.theme]}`
+                    : 'none',
+                  textDecoration: 'none',
+                  display: 'block',
+                }
+                const inner = (
+                  <>
                     <div style={{ marginBottom: '0.75rem' }}>
                       <span
                         style={{
@@ -422,13 +421,35 @@ export default function Puzzles() {
                         fontSize: '0.5rem',
                         letterSpacing: '0.2em',
                         textTransform: 'uppercase',
-                        color: 'rgba(255,255,255,0.2)',
+                        color: p.route ? THEME_ACCENT[p.theme] : 'rgba(255,255,255,0.2)',
+                        opacity: p.route ? 0.65 : 1,
                         paddingTop: '0.75rem',
                         borderTop: '1px solid rgba(255,255,255,0.06)',
                       }}
                     >
-                      planned
+                      {p.route ? 'play' : 'planned'}
                     </div>
+                  </>
+                )
+
+                return p.route ? (
+                  <Link
+                    key={p.id}
+                    href={p.route}
+                    onMouseEnter={() => setHoveredId(p.id)}
+                    onMouseLeave={() => setHoveredId(null)}
+                    style={cardStyle}
+                  >
+                    {inner}
+                  </Link>
+                ) : (
+                  <div
+                    key={p.id}
+                    onMouseEnter={() => setHoveredId(p.id)}
+                    onMouseLeave={() => setHoveredId(null)}
+                    style={cardStyle}
+                  >
+                    {inner}
                   </div>
                 )
               })}
