@@ -176,7 +176,7 @@ export default function SignalFromDeepSpace() {
 
         <Link
           href="/puzzles"
-          style={{ position: 'absolute', top: '1.8rem', left: '2rem', fontFamily: MONO, fontSize: '0.65rem', letterSpacing: '0.15em', color: 'rgba(0,190,210,0.5)', textDecoration: 'none' }}
+          style={{ position: 'absolute', top: '1.8rem', left: '2rem', fontFamily: MONO, fontSize: '0.8rem', letterSpacing: '0.15em', color: 'rgba(0,190,210,0.5)', textDecoration: 'none' }}
           onMouseEnter={e => (e.currentTarget.style.color = 'rgba(0,215,235,1)')}
           onMouseLeave={e => (e.currentTarget.style.color = 'rgba(0,190,210,0.5)')}
         >
@@ -184,17 +184,17 @@ export default function SignalFromDeepSpace() {
         </Link>
 
         <div style={{ maxWidth: '540px', width: '100%', border: '1px solid rgba(0,190,210,0.16)', borderRadius: '4px', padding: '2.5rem 2.4rem 2.2rem', background: 'rgba(0,30,50,0.28)' }}>
-          <p style={{ fontFamily: MONO, fontSize: '0.52rem', letterSpacing: '0.34em', color: 'rgba(0,190,210,0.4)', marginBottom: '0.5rem' }}>
+          <p style={{ fontFamily: MONO, fontSize: '0.68rem', letterSpacing: '0.34em', color: 'rgba(0,190,210,0.4)', marginBottom: '0.5rem' }}>
             SSIP EXPLORATORIUM
           </p>
-          <h1 style={{ fontFamily: MONO, fontSize: 'clamp(1.1rem, 3vw, 1.55rem)', fontWeight: 700, color: 'rgba(255,255,255,0.9)', letterSpacing: '0.06em', marginBottom: '0.3rem' }}>
+          <h1 style={{ fontFamily: MONO, fontSize: 'clamp(1.3rem, 3vw, 1.8rem)', fontWeight: 700, color: 'rgba(255,255,255,0.9)', letterSpacing: '0.06em', marginBottom: '0.3rem' }}>
             SIGNAL DETECTED
           </h1>
           <div style={{ height: '1px', background: 'rgba(0,190,210,0.18)', margin: '0.8rem 0 1.4rem' }} />
 
           {/* Raw bit preview */}
           <div style={{ background: 'rgba(0,10,20,0.75)', border: '1px solid rgba(0,190,210,0.1)', borderRadius: '3px', padding: '0.8rem 1rem', marginBottom: '1.5rem' }}>
-            <pre style={{ fontFamily: MONO, fontSize: '0.56rem', color: 'rgba(0,190,210,0.45)', lineHeight: 1.65, margin: 0, whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
+            <pre style={{ fontFamily: MONO, fontSize: '0.7rem', color: 'rgba(0,190,210,0.45)', lineHeight: 1.65, margin: 0, whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
               {bits.slice(0, 280).join('')}<span style={{ color: 'rgba(0,190,210,0.18)' }}>…</span>
             </pre>
           </div>
@@ -208,15 +208,15 @@ export default function SignalFromDeepSpace() {
               ['STATUS',   'Awaiting decode'],
             ] as const).map(([k, v]) => (
               <tr key={k}>
-                <td style={{ fontFamily: MONO, fontSize: '0.6rem', letterSpacing: '0.12em', color: 'rgba(0,190,210,0.45)', paddingBottom: '0.5rem', paddingRight: '2rem', whiteSpace: 'nowrap' }}>{k}</td>
-                <td style={{ fontFamily: MONO, fontSize: '0.6rem', color: 'rgba(255,255,255,0.65)', paddingBottom: '0.5rem' }}>{v}</td>
+                <td style={{ fontFamily: MONO, fontSize: '0.75rem', letterSpacing: '0.12em', color: 'rgba(0,190,210,0.45)', paddingBottom: '0.5rem', paddingRight: '2rem', whiteSpace: 'nowrap' }}>{k}</td>
+                <td style={{ fontFamily: MONO, fontSize: '0.75rem', color: 'rgba(255,255,255,0.65)', paddingBottom: '0.5rem' }}>{v}</td>
               </tr>
             ))}
           </table>
 
           <button
             onClick={() => setStage('decode')}
-            style={{ width: '100%', padding: '0.85rem', fontFamily: MONO, fontSize: '0.63rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(0,210,230,0.9)', background: 'transparent', border: '1px solid rgba(0,190,210,0.4)', borderRadius: '3px', cursor: 'pointer', transition: 'background 0.2s, border-color 0.2s' }}
+            style={{ width: '100%', padding: '0.85rem', fontFamily: MONO, fontSize: '0.78rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(0,210,230,0.9)', background: 'transparent', border: '1px solid rgba(0,190,210,0.4)', borderRadius: '3px', cursor: 'pointer', transition: 'background 0.2s, border-color 0.2s' }}
             onMouseEnter={e => { e.currentTarget.style.background = 'rgba(0,190,210,0.09)'; e.currentTarget.style.borderColor = 'rgba(0,210,230,0.75)' }}
             onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'rgba(0,190,210,0.4)' }}
           >
@@ -245,22 +245,22 @@ export default function SignalFromDeepSpace() {
 
         {/* ── LEFT: Controls ── */}
         <div style={{ flex: '0 0 280px', minWidth: '230px' }}>
-          <p style={{ fontFamily: MONO, fontSize: '0.52rem', letterSpacing: '0.3em', color: 'rgba(0,190,210,0.38)', marginBottom: '0.4rem' }}>SIGNAL DECODE</p>
-          <h2 style={{ fontFamily: MONO, fontSize: '1rem', fontWeight: 700, color: 'rgba(255,255,255,0.85)', marginBottom: '0.25rem', letterSpacing: '0.04em' }}>
+          <p style={{ fontFamily: MONO, fontSize: '0.68rem', letterSpacing: '0.3em', color: 'rgba(0,190,210,0.38)', marginBottom: '0.4rem' }}>SIGNAL DECODE</p>
+          <h2 style={{ fontFamily: MONO, fontSize: '1.2rem', fontWeight: 700, color: 'rgba(255,255,255,0.85)', marginBottom: '0.25rem', letterSpacing: '0.04em' }}>
             Signal from Deep Space
           </h2>
           <div style={{ height: '1px', background: 'rgba(0,190,210,0.16)', margin: '0.7rem 0 1.3rem' }} />
 
-          <p style={{ fontFamily: SERIF, fontSize: '0.82rem', fontStyle: 'italic', color: 'rgba(180,210,230,0.55)', lineHeight: 1.75, marginBottom: '1.5rem' }}>
+          <p style={{ fontFamily: SERIF, fontSize: '0.96rem', fontStyle: 'italic', color: 'rgba(180,210,230,0.55)', lineHeight: 1.75, marginBottom: '1.5rem' }}>
             The binary sequence can be arranged into a 2D grid. The correct dimensions will reveal a hidden image.
           </p>
 
-          <p style={{ fontFamily: MONO, fontSize: '0.55rem', letterSpacing: '0.12em', color: 'rgba(0,190,210,0.4)', marginBottom: '0.3rem' }}>PAYLOAD</p>
+          <p style={{ fontFamily: MONO, fontSize: '0.7rem', letterSpacing: '0.12em', color: 'rgba(0,190,210,0.4)', marginBottom: '0.3rem' }}>PAYLOAD</p>
           <p style={{ fontFamily: MONO, fontSize: '1.15rem', fontWeight: 700, color: 'rgba(255,255,255,0.78)', letterSpacing: '0.06em', marginBottom: '1.6rem' }}>
             1,679 bits
           </p>
 
-          <label style={{ fontFamily: MONO, fontSize: '0.56rem', letterSpacing: '0.16em', color: 'rgba(0,190,210,0.45)', display: 'block', marginBottom: '0.45rem' }}>
+          <label style={{ fontFamily: MONO, fontSize: '0.72rem', letterSpacing: '0.16em', color: 'rgba(0,190,210,0.45)', display: 'block', marginBottom: '0.45rem' }}>
             COLUMNS (WIDTH)
           </label>
           <div style={{ display: 'flex', gap: '0.55rem', marginBottom: '0.55rem' }}>
@@ -276,7 +276,7 @@ export default function SignalFromDeepSpace() {
             />
             <button
               onClick={handleRender}
-              style={{ padding: '0.5rem 1rem', fontFamily: MONO, fontSize: '0.6rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(0,210,230,0.88)', background: 'transparent', border: '1px solid rgba(0,190,210,0.38)', borderRadius: '3px', cursor: 'pointer', whiteSpace: 'nowrap', transition: 'background 0.15s' }}
+              style={{ padding: '0.5rem 1rem', fontFamily: MONO, fontSize: '0.75rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(0,210,230,0.88)', background: 'transparent', border: '1px solid rgba(0,190,210,0.38)', borderRadius: '3px', cursor: 'pointer', whiteSpace: 'nowrap', transition: 'background 0.15s' }}
               onMouseEnter={e => (e.currentTarget.style.background = 'rgba(0,190,210,0.1)')}
               onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
             >
@@ -285,13 +285,13 @@ export default function SignalFromDeepSpace() {
           </div>
 
           {renderHeight !== null && (
-            <p style={{ fontFamily: MONO, fontSize: '0.57rem', color: 'rgba(0,190,210,0.45)', marginBottom: '0.55rem', letterSpacing: '0.1em' }}>
+            <p style={{ fontFamily: MONO, fontSize: '0.72rem', color: 'rgba(0,190,210,0.45)', marginBottom: '0.55rem', letterSpacing: '0.1em' }}>
               → {renderWidth} × {renderHeight} grid
             </p>
           )}
 
           {error && (
-            <p style={{ fontFamily: MONO, fontSize: '0.58rem', color: 'rgba(255,90,90,0.82)', lineHeight: 1.55, marginBottom: '0.6rem' }}>
+            <p style={{ fontFamily: MONO, fontSize: '0.73rem', color: 'rgba(255,90,90,0.82)', lineHeight: 1.55, marginBottom: '0.6rem' }}>
               {error}
             </p>
           )}
@@ -299,8 +299,8 @@ export default function SignalFromDeepSpace() {
           {/* Hint — appears after 60 s */}
           {hintVisible && stage !== 'solved' && (
             <div style={{ marginTop: '1.6rem', padding: '0.9rem 1rem', background: 'rgba(0,100,120,0.1)', border: '1px solid rgba(0,190,210,0.14)', borderRadius: '3px' }}>
-              <p style={{ fontFamily: MONO, fontSize: '0.52rem', letterSpacing: '0.18em', color: 'rgba(0,190,210,0.45)', marginBottom: '0.45rem' }}>HINT</p>
-              <p style={{ fontFamily: SERIF, fontSize: '0.78rem', fontStyle: 'italic', color: 'rgba(180,210,230,0.6)', lineHeight: 1.65, margin: 0 }}>
+              <p style={{ fontFamily: MONO, fontSize: '0.68rem', letterSpacing: '0.18em', color: 'rgba(0,190,210,0.45)', marginBottom: '0.45rem' }}>HINT</p>
+              <p style={{ fontFamily: SERIF, fontSize: '0.92rem', fontStyle: 'italic', color: 'rgba(180,210,230,0.6)', lineHeight: 1.65, margin: 0 }}>
                 1,679 is not arbitrary. Try expressing it as a product of two prime numbers.
               </p>
             </div>
@@ -309,10 +309,10 @@ export default function SignalFromDeepSpace() {
           {/* Solve reveal */}
           {stage === 'solved' && (
             <div style={{ marginTop: '1.8rem', padding: '1.1rem 1rem', background: 'rgba(0,120,140,0.1)', border: '1px solid rgba(0,190,210,0.22)', borderRadius: '3px' }}>
-              <p style={{ fontFamily: MONO, fontSize: '0.52rem', letterSpacing: '0.2em', color: 'rgba(0,220,255,0.65)', marginBottom: '0.65rem' }}>
+              <p style={{ fontFamily: MONO, fontSize: '0.68rem', letterSpacing: '0.2em', color: 'rgba(0,220,255,0.65)', marginBottom: '0.65rem' }}>
                 SIGNAL DECODED
               </p>
-              <p style={{ fontFamily: SERIF, fontSize: '0.8rem', fontStyle: 'italic', color: 'rgba(200,235,255,0.7)', lineHeight: 1.8, margin: 0 }}>
+              <p style={{ fontFamily: SERIF, fontSize: '0.94rem', fontStyle: 'italic', color: 'rgba(200,235,255,0.7)', lineHeight: 1.8, margin: 0 }}>
                 This image is inspired by the{' '}
                 <strong style={{ fontStyle: 'normal', color: 'rgba(255,255,255,0.85)', fontWeight: 600 }}>Arecibo Message</strong>
                 , broadcast from Earth in 1974 toward the globular cluster M13, 25,000 light-years away.
@@ -328,7 +328,7 @@ export default function SignalFromDeepSpace() {
         <div style={{ flex: '1 1 200px', position: 'relative' }}>
           {canvasVisible && (
             <>
-              <p style={{ fontFamily: MONO, fontSize: '0.52rem', letterSpacing: '0.2em', color: stage === 'solved' ? 'rgba(0,220,255,0.65)' : 'rgba(255,255,255,0.22)', marginBottom: '0.7rem', transition: 'color 0.6s' }}>
+              <p style={{ fontFamily: MONO, fontSize: '0.68rem', letterSpacing: '0.2em', color: stage === 'solved' ? 'rgba(0,220,255,0.65)' : 'rgba(255,255,255,0.22)', marginBottom: '0.7rem', transition: 'color 0.6s' }}>
                 {stage === 'solved' ? 'PATTERN IDENTIFIED' : `${renderWidth} \u00d7 ${renderHeight}`}
               </p>
               <div style={{
@@ -347,7 +347,7 @@ export default function SignalFromDeepSpace() {
 
           {renderWidth !== null && !canvasVisible && (
             <div style={{ padding: '1.2rem', background: 'rgba(0,10,20,0.6)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '4px', maxWidth: '340px' }}>
-              <p style={{ fontFamily: MONO, fontSize: '0.6rem', color: 'rgba(255,200,80,0.65)', lineHeight: 1.7, margin: 0 }}>
+              <p style={{ fontFamily: MONO, fontSize: '0.75rem', color: 'rgba(255,200,80,0.65)', lineHeight: 1.7, margin: 0 }}>
                 At {renderWidth} × {renderHeight}, the arrangement is too elongated to show a meaningful pattern.
                 Try a different width.
               </p>

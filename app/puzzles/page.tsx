@@ -184,7 +184,7 @@ export default function Puzzles() {
           <p
             style={{
               fontFamily: 'var(--font-geist-mono, monospace)',
-              fontSize: '0.62rem',
+              fontSize: '0.75rem',
               letterSpacing: '0.38em',
               textTransform: 'uppercase',
               color: 'rgba(0,190,210,0.38)',
@@ -276,7 +276,7 @@ export default function Puzzles() {
                 top: '2rem',
                 right: '2rem',
                 fontFamily: "'Times New Roman', Times, serif",
-                fontSize: '0.8rem',
+                fontSize: '0.95rem',
                 letterSpacing: '0.08em',
                 color: 'rgba(0,190,210,0.6)',
                 textDecoration: 'none',
@@ -298,7 +298,7 @@ export default function Puzzles() {
               <p
                 style={{
                   fontFamily: "'Times New Roman', Times, serif",
-                  fontSize: '0.58rem',
+                  fontSize: '0.72rem',
                   letterSpacing: '0.32em',
                   textTransform: 'uppercase',
                   color: 'rgba(0,190,210,0.32)',
@@ -324,7 +324,7 @@ export default function Puzzles() {
               <p
                 style={{
                   fontFamily: "'Times New Roman', Times, serif",
-                  fontSize: '0.8rem',
+                  fontSize: '0.95rem',
                   fontStyle: 'italic',
                   color: 'rgba(150,200,230,0.42)',
                   letterSpacing: '0.06em',
@@ -376,7 +376,7 @@ export default function Puzzles() {
                       <span
                         style={{
                           fontFamily: 'var(--font-geist-mono, monospace)',
-                          fontSize: '0.55rem',
+                          fontSize: '0.7rem',
                           letterSpacing: '0.18em',
                           color: THEME_ACCENT[p.theme],
                           opacity: hovered ? 1 : 0.7,
@@ -390,7 +390,7 @@ export default function Puzzles() {
                     <h2
                       style={{
                         fontFamily: 'var(--font-geist-mono, monospace)',
-                        fontSize: '0.88rem',
+                        fontSize: '1.02rem',
                         fontWeight: 600,
                         color: hovered ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.72)',
                         marginBottom: '0.65rem',
@@ -405,7 +405,7 @@ export default function Puzzles() {
                     <p
                       style={{
                         fontFamily: "'Times New Roman', Times, serif",
-                        fontSize: '0.78rem',
+                        fontSize: '0.92rem',
                         fontStyle: 'italic',
                         color: 'rgba(180,210,230,0.5)',
                         lineHeight: 1.6,
@@ -418,7 +418,7 @@ export default function Puzzles() {
                     <div
                       style={{
                         fontFamily: 'var(--font-geist-mono, monospace)',
-                        fontSize: '0.5rem',
+                        fontSize: '0.65rem',
                         letterSpacing: '0.2em',
                         textTransform: 'uppercase',
                         color: p.route ? THEME_ACCENT[p.theme] : 'rgba(255,255,255,0.2)',
