@@ -48,6 +48,7 @@ const PUZZLES_DATA: { id: string; title: string; theme: Theme; desc: string; rou
     title: 'Turing or Not Turing',
     theme: 'AI',
     desc: 'Read two conversation transcripts — determine which participant is an AI.',
+    route: '/puzzles/turing-not-turing',
   },
   {
     id: 'neural-paint',

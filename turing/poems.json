@@ -1,0 +1,43 @@
+{
+  "category": "poem",
+  "groupings": [
+    {
+      "id": "example-grouping-1",
+      "title": "Example Title",
+      "prompt": "Paste the exact prompt you gave to each author here.",
+      "responses": [
+        {
+          "source": "Human",
+          "content": "Paste the human-written response here.\n\nMultiple paragraphs or stanzas are fine — use \\n for line breaks within JSON strings."
+        },
+        {
+          "source": "GPT-4o",
+          "content": "Paste the GPT-4o response here."
+        },
+        {
+          "source": "Claude Sonnet 4.5",
+          "content": "Paste the Claude Sonnet 4.5 response here."
+        }
+      ]
+    },
+    {
+      "id": "example-grouping-2",
+      "title": "Another Example",
+      "prompt": "A second prompt example — add as many groupings as you like.",
+      "responses": [
+        {
+          "source": "Human",
+          "content": "Human response for the second grouping."
+        },
+        {
+          "source": "GPT-4o",
+          "content": "GPT-4o response for the second grouping."
+        },
+        {
+          "source": "Claude Sonnet 4.5",
+          "content": "Claude Sonnet 4.5 response for the second grouping."
+        }
+      ]
+    }
+  ]
+}
