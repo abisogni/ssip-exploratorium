@@ -78,6 +78,7 @@ const PUZZLES_DATA: { id: string; title: string; theme: Theme; desc: string; rou
     title: 'Dead Reckoning',
     theme: 'SPACE',
     desc: 'Plan Mars rover commands 20 minutes before they reach the surface.',
+    route: '/puzzles/dead-reckoning',
   },
 ]
 
