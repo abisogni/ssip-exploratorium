@@ -209,29 +209,30 @@ Player is given a real (or realistic) stellar light curve — brightness vs. tim
 ---
 
 ### 9. Dead Reckoning
-**Status:** `planned`
+**Status:** `shipped`
 
 **Concept:**
 Player controls a Mars rover, but every command takes 20 minutes of simulated communication delay to arrive. They must plan a sequence of moves in advance to navigate the rover to a target without being able to react in real time.
 
 **Mechanics:**
 - Grid map of Martian terrain with obstacles and a goal marker
-- Player queues up commands: move forward N steps, turn left/right
-- "Send transmission" executes the queue after a visual delay countdown
+- Player queues up commands: FORWARD, LEFT, RIGHT
+- "Send Transmission" executes the queue after a 3-second countdown
 - If the rover hits an obstacle, mission fails — player re-plans
-- Levels increase in terrain complexity
+- 3 levels of increasing terrain complexity
 
 **UI:**
-- Top-down grid view, Mars color palette
-- Command queue panel (drag to reorder)
-- Delay countdown animation before execution
-- Rover animates through the path step by step
+- Top-down CSS grid, Mars color palette (`#0e0400` bg, amber accents)
+- Command queue panel with per-command remove; active command highlighted during execution
+- Briefing screen with 20-minute delay narrative
+- Rover animates step by step with a trail; success/fail overlays on grid
 
 **Tech:**
-- Pure React state machine — grid positions, command queue, execution loop
-- No physics needed; grid-based movement
-- Level maps as JSON arrays
-- Straightforward to build (~1–2 days)
+- `'use client'` page with phase state machine: briefing → planning → transmitting → executing → success | fail
+- Pure React state + `useRef` timeout chain for execution animation (550ms/step)
+- Grid defined as `Cell[][]` parsed from template strings; direction tables for turns
+- 3 levels verified solvable: L1 13/16 cmds, L2 17/20, L3 22/24 (direct paths rock-blocked)
+- Route: `/puzzles/dead-reckoning`
 
 ---
 
