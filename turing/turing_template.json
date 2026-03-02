@@ -1,0 +1,18 @@
+[
+  {
+    "source": "Author Name — via Source (e.g. Dr. Seuss — via AllPoetry.org)",
+    "title": "Title of the piece",
+    "content": [
+      "First line of content here.",
+      "Second line here.",
+      "",
+      "New stanza or paragraph — blank string above creates a line break.",
+      "Continue as needed."
+    ]
+  },
+  {
+    "source": "Another Author — via Another Source",
+    "title": "Another Title",
+    "content": "You can also use a plain string instead of an array. Use \\n for line breaks: line one\\n\\nline two after a blank line."
+  }
+]
