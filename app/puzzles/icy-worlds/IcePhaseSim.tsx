@@ -263,7 +263,15 @@ export default function IcePhaseSim({ phase, transitioning }: Props) {
 
     // ── Animation ──
     let t = 0
+    stateRef.current = { renderer, scene, camera, raf: 0, hParticles, hMesh: hMobileMesh, bondLines }
+
     function animate() {
+      if (!stateRef.current) return
+      // Skip rendering until the canvas has real dimensions
+      if (mount.offsetWidth === 0 || mount.offsetHeight === 0) {
+        stateRef.current.raf = requestAnimationFrame(animate)
+        return
+      }
       t += 0.005
       // Slow rotation of the whole scene
       oMesh.rotation.y = t * 0.3
@@ -304,11 +312,9 @@ export default function IcePhaseSim({ phase, transitioning }: Props) {
 
       key.position.set(8 * Math.cos(t * 0.4), 6, 12)
       renderer.render(scene, camera)
-      stateRef.current!.raf = requestAnimationFrame(animate)
+      stateRef.current.raf = requestAnimationFrame(animate)
     }
     animate()
-
-    stateRef.current = { renderer, scene, camera, raf: 0, hParticles, hMesh: hMobileMesh, bondLines }
 
     return () => {
       if (stateRef.current) cancelAnimationFrame(stateRef.current.raf)
