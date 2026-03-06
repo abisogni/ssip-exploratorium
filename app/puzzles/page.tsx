@@ -7,7 +7,7 @@ import Link from 'next/link'
 const CIPHER_TITLE = 'AFKKWPD'
 
 type Phase = 'hold' | 'dissolve' | 'done'
-type Theme = 'CRYPTO' | 'AI' | 'SPACE'
+type Theme = 'CRYPTO' | 'AI' | 'SPACE' | 'MOLECULAR'
 
 // ── Per-letter dissolve values (stable — not computed at render time) ─────────
 // Each letter drifts independently: upward + slight lateral spread, staggered
@@ -23,7 +23,7 @@ const LETTER_DISSOLVE: { delayMs: number; dx: number; dy: number; rotate: number
 
 // ── Puzzle registry ───────────────────────────────────────────────────────────
 
-const PUZZLES_DATA: { id: string; title: string; theme: Theme; desc: string; route?: string }[] = [
+const PUZZLES_DATA: { id: string; title: string; titleParts?: [string, string]; theme: Theme; desc: string; route?: string }[] = [
   {
     id: 'cipher-room',
     title: 'The Cipher Room',
@@ -81,26 +81,37 @@ const PUZZLES_DATA: { id: string; title: string; theme: Theme; desc: string; rou
     desc: 'Plan Mars rover commands 20 minutes before they reach the surface.',
     route: '/puzzles/dead-reckoning',
   },
+  {
+    id: 'icy-worlds',
+    title: 'LattICE',
+    titleParts: ['Latt', 'ICE'],
+    theme: 'MOLECULAR',
+    desc: 'Navigate pressure and temperature to discover the exotic ice phases hidden inside Neptune.',
+    route: '/puzzles/icy-worlds',
+  },
 ]
 
 // ── Theme styling ─────────────────────────────────────────────────────────────
 
 const THEME_ACCENT: Record<Theme, string> = {
-  CRYPTO: 'rgba(210,158,32,0.92)',
-  AI:     'rgba(0,198,212,0.92)',
-  SPACE:  'rgba(128,92,232,0.92)',
+  CRYPTO:    'rgba(210,158,32,0.92)',
+  AI:        'rgba(0,198,212,0.92)',
+  SPACE:     'rgba(128,92,232,0.92)',
+  MOLECULAR: 'rgba(32,210,140,0.92)',
 }
 
 const THEME_GLOW: Record<Theme, string> = {
-  CRYPTO: 'rgba(200,148,20,0.14)',
-  AI:     'rgba(0,190,210,0.14)',
-  SPACE:  'rgba(110,82,220,0.14)',
+  CRYPTO:    'rgba(200,148,20,0.14)',
+  AI:        'rgba(0,190,210,0.14)',
+  SPACE:     'rgba(110,82,220,0.14)',
+  MOLECULAR: 'rgba(20,200,120,0.14)',
 }
 
 const THEME_BORDER: Record<Theme, string> = {
-  CRYPTO: 'rgba(200,148,20,0.22)',
-  AI:     'rgba(0,190,210,0.22)',
-  SPACE:  'rgba(110,82,220,0.22)',
+  CRYPTO:    'rgba(200,148,20,0.22)',
+  AI:        'rgba(0,190,210,0.22)',
+  SPACE:     'rgba(110,82,220,0.22)',
+  MOLECULAR: 'rgba(20,200,120,0.22)',
 }
 
 // ── Backgrounds ───────────────────────────────────────────────────────────────
@@ -401,7 +412,9 @@ export default function Puzzles() {
                         letterSpacing: '0.01em',
                       }}
                     >
-                      {p.title}
+                      {p.titleParts
+                        ? <>{p.titleParts[0]}<strong>{p.titleParts[1]}</strong></>
+                        : p.title}
                     </h2>
 
                     <p
