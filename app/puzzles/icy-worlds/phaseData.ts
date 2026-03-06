@@ -161,7 +161,7 @@ export const PHASES: Record<PhaseId, IcePhase> = {
     labelLogP: 1.78,
     labelT: 600,
     color: '#3060a0',
-    glowColor: '#1840808',
+    glowColor: '#184080',
     background: 'rgba(2,4,16,1)',
     oxygenFixed: true,
     hydrogenMobile: false,
