@@ -268,7 +268,7 @@ export default function IcePhaseSim({ phase, transitioning }: Props) {
     function animate() {
       if (!stateRef.current) return
       // Skip rendering until the canvas has real dimensions
-      if (mount.offsetWidth === 0 || mount.offsetHeight === 0) {
+      if (mount!.offsetWidth === 0 || mount!.offsetHeight === 0) {
         stateRef.current.raf = requestAnimationFrame(animate)
         return
       }
