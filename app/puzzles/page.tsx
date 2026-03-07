@@ -65,6 +65,7 @@ const PUZZLES_DATA: { id: string; title: string; titleParts?: [string, string]; 
     title: 'Adversarial Patch',
     theme: 'AI',
     desc: 'See how imperceptible pixel changes fool image classifiers.',
+    route: '/puzzles/adversarial-patch',
   },
   {
     id: 'exoplanet-detective',
