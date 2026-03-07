@@ -37,6 +37,7 @@ const PUZZLES_DATA: { id: string; title: string; titleParts?: [string, string]; 
     title: 'Frequency Fingerprint',
     theme: 'CRYPTO',
     desc: 'Break a substitution cipher by analyzing letter frequency distributions.',
+    route: '/puzzles/frequency-fingerprint',
   },
   {
     id: 'signal-deep-space',
@@ -57,6 +58,7 @@ const PUZZLES_DATA: { id: string; title: string; titleParts?: [string, string]; 
     title: 'Neural Paint',
     theme: 'AI',
     desc: 'Draw a shape on a canvas; watch a neural network classify it in real time.',
+    route: '/puzzles/neural-paint',
   },
   {
     id: 'adversarial-patch',
