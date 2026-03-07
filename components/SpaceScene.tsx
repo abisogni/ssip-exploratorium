@@ -64,6 +64,23 @@ const PLANETS = [
   },
 ]
 
+// Shift cipher for the puzzles planet label (shift 713 % 26 = 11)
+const CIPHER_SHIFT = 713 % 26 // 11
+const CIPHER_PLAIN = 'puzzles'
+const CIPHER_ENCRYPTED = CIPHER_PLAIN.split('').map((ch) => {
+  const c = ch.charCodeAt(0) - 97
+  return String.fromCharCode(((c + CIPHER_SHIFT) % 26) + 97)
+}).join('') // 'afkkwpd'
+
+function getCipherFrame(progress: number): string {
+  // progress 0 = fully encrypted, 1 = fully decrypted
+  return CIPHER_PLAIN.split('').map((ch) => {
+    const c = ch.charCodeAt(0) - 97
+    const shift = Math.round(CIPHER_SHIFT * (1 - progress))
+    return String.fromCharCode(((c + shift) % 26) + 97)
+  }).join('')
+}
+
 function buildAstronaut(): THREE.Group {
   const suit = new THREE.MeshPhongMaterial({
     color: 0xdde8f5,
@@ -302,7 +319,7 @@ export default function SpaceScene() {
 
       // Create label for this planet
       const labelDiv = document.createElement('div')
-      labelDiv.textContent = p.slug.replace('/', '')
+      labelDiv.textContent = p.slug === '/puzzles' ? CIPHER_ENCRYPTED : p.slug.replace('/', '')
       labelDiv.style.color = 'rgba(255, 255, 255, 0.9)'
       labelDiv.style.fontFamily = "'Courier New', monospace"
       labelDiv.style.fontSize = '14px'
@@ -335,10 +352,62 @@ export default function SpaceScene() {
       scene.add(torus)
     })
 
+    // --- Cipher animation for puzzles planet label ---
+    const puzzlesPlanetIndex = PLANETS.findIndex((p) => p.slug === '/puzzles')
+    const puzzlesLabelDiv = puzzlesPlanetIndex >= 0
+      ? (planetMeshes[puzzlesPlanetIndex].userData.label as HTMLElement)
+      : null
+
+    let cipherAnimId = 0
+    let stopCipherAnim: (() => void) | null = null
+
+    function startCipherAnimation() {
+      const HOLD = 1500   // ms to hold encrypted or decrypted
+      const TRANSITION = 1000 // ms to animate between states
+
+      type Phase = 'encrypted' | 'decrypting' | 'decrypted' | 'encrypting'
+      let phase: Phase = 'encrypted'
+      let phaseStart = performance.now()
+      let active = true
+
+      if (puzzlesLabelDiv) puzzlesLabelDiv.textContent = CIPHER_ENCRYPTED
+
+      function tick() {
+        if (!active || !puzzlesLabelDiv) return
+        const elapsed = performance.now() - phaseStart
+
+        if (phase === 'encrypted') {
+          puzzlesLabelDiv.textContent = CIPHER_ENCRYPTED
+          if (elapsed >= HOLD) { phase = 'decrypting'; phaseStart = performance.now() }
+        } else if (phase === 'decrypting') {
+          const p = Math.min(elapsed / TRANSITION, 1)
+          puzzlesLabelDiv.textContent = getCipherFrame(p)
+          if (p >= 1) { phase = 'decrypted'; phaseStart = performance.now() }
+        } else if (phase === 'decrypted') {
+          puzzlesLabelDiv.textContent = CIPHER_PLAIN
+          if (elapsed >= HOLD) { phase = 'encrypting'; phaseStart = performance.now() }
+        } else {
+          const p = Math.min(elapsed / TRANSITION, 1)
+          puzzlesLabelDiv.textContent = getCipherFrame(1 - p)
+          if (p >= 1) { phase = 'encrypted'; phaseStart = performance.now() }
+        }
+
+        cipherAnimId = requestAnimationFrame(tick)
+      }
+
+      cipherAnimId = requestAnimationFrame(tick)
+      return () => {
+        active = false
+        cancelAnimationFrame(cipherAnimId)
+        if (puzzlesLabelDiv) puzzlesLabelDiv.textContent = CIPHER_ENCRYPTED
+      }
+    }
+
     // --- Raycaster ---
     const raycaster = new THREE.Raycaster()
     const mouse = new THREE.Vector2(-2, -2)
     let hovered: THREE.Object3D | null = null
+    let prevHovered: THREE.Object3D | null = null
 
     function onMouseMove(e: MouseEvent) {
       const rect = mount!.getBoundingClientRect()
@@ -440,6 +509,18 @@ export default function SpaceScene() {
         renderer.domElement.style.cursor = 'default'
       }
 
+      // Detect puzzles planet hover transitions
+      const puzzlesMesh = puzzlesPlanetIndex >= 0 ? planetMeshes[puzzlesPlanetIndex] : null
+      const isPuzzlesHovered = hovered === puzzlesMesh
+      const wasPuzzlesHovered = prevHovered === puzzlesMesh
+      if (isPuzzlesHovered && !wasPuzzlesHovered) {
+        stopCipherAnim = startCipherAnimation() ?? null
+      } else if (!isPuzzlesHovered && wasPuzzlesHovered && stopCipherAnim) {
+        stopCipherAnim()
+        stopCipherAnim = null
+      }
+      prevHovered = hovered
+
       renderer.render(scene, camera)
       labelRenderer.render(scene, camera)
     }
@@ -460,6 +541,8 @@ export default function SpaceScene() {
 
     return () => {
       cancelAnimationFrame(animId)
+      cancelAnimationFrame(cipherAnimId)
+      if (stopCipherAnim) stopCipherAnim()
       mount.removeEventListener('mousemove', onMouseMove)
       mount.removeEventListener('click', onClick)
       window.removeEventListener('resize', onResize)
