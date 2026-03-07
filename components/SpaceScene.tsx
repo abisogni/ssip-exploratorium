@@ -35,7 +35,7 @@ const PLANETS = [
     orbitNode: 2.1,
   },
   {
-    slug: '/afkkwpd',
+    slug: '/puzzles',
     color: 0x148c54,
     emissive: 0x043318,
     roughness: 0.55,
