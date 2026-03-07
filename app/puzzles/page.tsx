@@ -30,6 +30,7 @@ const PUZZLES_DATA: { id: string; title: string; titleParts?: [string, string]; 
     titleFontSize: '0.82rem',
     theme: 'CRYPTO',
     desc: 'Learn and use decryption techniques to change the history of humankind.',
+    route: '/puzzles/cipher-room',
   },
   {
     id: 'frequency-fingerprint',
