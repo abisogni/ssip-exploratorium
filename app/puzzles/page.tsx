@@ -26,7 +26,7 @@ const LETTER_DISSOLVE: { delayMs: number; dx: number; dy: number; rotate: number
 const PUZZLES_DATA: { id: string; title: string; titleParts?: [string, string]; theme: Theme; desc: string; route?: string }[] = [
   {
     id: 'cipher-room',
-    title: 'The Cipher Room',
+    title: 'Κρυπτός Εργαστήριο',
     theme: 'CRYPTO',
     desc: 'Crack intercepted SSIP transmissions across three cipher levels.',
   },
