@@ -29,7 +29,7 @@ const PUZZLES_DATA: { id: string; title: string; titleParts?: [string, string]; 
     title: 'Κρυπτός Εργαστήριο',
     titleFontSize: '0.82rem',
     theme: 'CRYPTO',
-    desc: 'Crack intercepted SSIP transmissions across three cipher levels.',
+    desc: 'Learn and use decryption techniques to change the history of humankind.',
   },
   {
     id: 'frequency-fingerprint',
