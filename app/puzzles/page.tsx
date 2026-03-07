@@ -23,10 +23,11 @@ const LETTER_DISSOLVE: { delayMs: number; dx: number; dy: number; rotate: number
 
 // ── Puzzle registry ───────────────────────────────────────────────────────────
 
-const PUZZLES_DATA: { id: string; title: string; titleParts?: [string, string]; theme: Theme; desc: string; route?: string }[] = [
+const PUZZLES_DATA: { id: string; title: string; titleParts?: [string, string]; titleFontSize?: string; theme: Theme; desc: string; route?: string }[] = [
   {
     id: 'cipher-room',
     title: 'Κρυπτός Εργαστήριο',
+    titleFontSize: '0.82rem',
     theme: 'CRYPTO',
     desc: 'Crack intercepted SSIP transmissions across three cipher levels.',
   },
@@ -403,7 +404,7 @@ export default function Puzzles() {
                     <h2
                       style={{
                         fontFamily: 'var(--font-geist-mono, monospace)',
-                        fontSize: '1.02rem',
+                        fontSize: p.titleFontSize ?? '1.02rem',
                         fontWeight: 600,
                         color: hovered ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.72)',
                         marginBottom: '0.65rem',
