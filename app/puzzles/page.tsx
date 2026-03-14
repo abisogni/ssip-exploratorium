@@ -140,9 +140,19 @@ const GRAIN_URI =
 export default function Puzzles() {
   const [phase, setPhase]         = useState<Phase>('hold')
   const [hoveredId, setHoveredId] = useState<string | null>(null)
+  const [isMobile, setIsMobile]   = useState(false)
 
   const scrollRef   = useRef<HTMLDivElement>(null)
   const section2Ref = useRef<HTMLDivElement>(null)
+
+  // Detect mobile
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px)')
+    setIsMobile(mq.matches)
+    const h = (e: MediaQueryListEvent) => setIsMobile(e.matches)
+    mq.addEventListener('change', h)
+    return () => mq.removeEventListener('change', h)
+  }, [])
 
   // Animation sequence
   useEffect(() => {
@@ -191,6 +201,7 @@ export default function Puzzles() {
         {/* ── Section 1: Intro ── */}
         <div
           style={{
+            position: 'relative',
             height: '100vh',
             display: 'flex',
             flexDirection: 'column',
@@ -199,6 +210,30 @@ export default function Puzzles() {
             background: INTRO_BG,
           }}
         >
+          {/* Back link — top left, visible during animation */}
+          <Link
+            href="/"
+            style={{
+              position: 'absolute',
+              top: '1.5rem',
+              left: '2rem',
+              fontFamily: "'Times New Roman', Times, serif",
+              fontStyle: 'italic',
+              fontSize: '0.9rem',
+              letterSpacing: '0.06em',
+              color: 'rgba(0,190,210,0.45)',
+              textDecoration: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+              transition: 'color 0.2s',
+            }}
+            onMouseEnter={e => (e.currentTarget.style.color = 'rgba(0,210,230,0.9)')}
+            onMouseLeave={e => (e.currentTarget.style.color = 'rgba(0,190,210,0.45)')}
+          >
+            <span style={{ fontSize: '1.1rem' }}>←</span> Exploratorium
+          </Link>
+
           <p
             style={{
               fontFamily: 'var(--font-geist-mono, monospace)',
@@ -310,6 +345,33 @@ export default function Puzzles() {
               <span style={{ fontSize: '1.2rem' }}>←</span>
               <span>back to Exploratorium space</span>
             </Link>
+
+            {/* Mobile notice */}
+            {isMobile && (
+              <div
+                style={{
+                  margin: '5.5rem 1.5rem 0 1.5rem',
+                  padding: '1rem 1.3rem',
+                  border: '1px solid rgba(0,190,210,0.18)',
+                  borderRadius: '4px',
+                  background: 'rgba(0,190,210,0.05)',
+                }}
+              >
+                <p
+                  style={{
+                    fontFamily: 'var(--font-geist-mono, monospace)',
+                    fontSize: '0.72rem',
+                    letterSpacing: '0.06em',
+                    color: 'rgba(0,190,210,0.65)',
+                    lineHeight: 1.7,
+                    margin: 0,
+                  }}
+                >
+                  These puzzles are formatted for desktop screens — the experience may be limited on
+                  mobile. A mobile-optimised version is coming soon.
+                </p>
+              </div>
+            )}
 
             {/* Page header */}
             <div style={{ textAlign: 'center', paddingTop: '6vh', paddingBottom: '5vh' }}>
