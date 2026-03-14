@@ -19,6 +19,39 @@ export default function DevBranchLayout({ children }: { children: React.ReactNod
         .gh-api-row:hover { background: #161b22; }
         .gh-proj-card:hover { border-color: #58a6ff !important; }
         .gh-breadcrumb a:hover { text-decoration: underline; }
+
+        /* Mobile responsive styles */
+        @media (max-width: 768px) {
+          /* Hide sidebar on mobile */
+          .dev-branch-sidebar {
+            display: none !important;
+          }
+
+          /* Show repo icons on mobile */
+          .repo-icon {
+            display: flex !important;
+          }
+
+          /* Adjust repo card padding for mobile */
+          .gh-repo-card {
+            padding: 16px 12px !important;
+          }
+
+          /* Hide topics on mobile to save space */
+          .gh-repo-card .repo-topics {
+            display: none !important;
+          }
+
+          /* Hide filter selects on mobile */
+          .filter-selects {
+            display: none !important;
+          }
+
+          /* Hide tabs on mobile */
+          .repo-tabs {
+            display: none !important;
+          }
+        }
       `}</style>
       {children}
     </>

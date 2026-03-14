@@ -29,6 +29,8 @@ const REPOS = [
     forks: 0,
     isPublic: true,
     topics: ['space', 'api', 'nasa', 'astronomy', 'open-data'],
+    icon: '🚀',
+    iconBg: '#1f6feb',
   },
   {
     slug: 'open-source',
@@ -41,6 +43,8 @@ const REPOS = [
     forks: 0,
     isPublic: true,
     topics: ['space', 'open-source', 'astrodynamics', 'mission-ops'],
+    icon: '🔓',
+    iconBg: '#3fb950',
   },
   {
     slug: 'ssip-projects',
@@ -53,6 +57,8 @@ const REPOS = [
     forks: 0,
     isPublic: false,
     topics: ['ssip', 'hackathon', 'space', 'prototypes'],
+    icon: '📁',
+    iconBg: '#8b5cf6',
   },
 ]
 
@@ -143,7 +149,7 @@ export default function DevBranch() {
         }}
       >
         {/* ── Sidebar ── */}
-        <aside style={{ width: 272, flexShrink: 0 }}>
+        <aside className="dev-branch-sidebar" style={{ width: 272, flexShrink: 0 }}>
           {/* Avatar */}
           <div
             style={{
@@ -202,6 +208,7 @@ export default function DevBranch() {
         <main style={{ flex: 1, minWidth: 0 }}>
           {/* Tabs */}
           <div
+            className="repo-tabs"
             style={{
               display: 'flex',
               borderBottom: `1px solid ${GH.border}`,
@@ -262,22 +269,24 @@ export default function DevBranch() {
                 fontSize: 14,
               }}
             />
-            {['Type', 'Language', 'Sort'].map((label) => (
-              <select
-                key={label}
-                style={{
-                  background: GH.bgSecondary,
-                  border: `1px solid ${GH.border}`,
-                  borderRadius: 6,
-                  padding: '5px 12px',
-                  color: GH.text,
-                  fontSize: 13,
-                  cursor: 'pointer',
-                }}
-              >
-                <option>{label}</option>
-              </select>
-            ))}
+            <div className="filter-selects" style={{ display: 'flex', gap: 8 }}>
+              {['Type', 'Language', 'Sort'].map((label) => (
+                <select
+                  key={label}
+                  style={{
+                    background: GH.bgSecondary,
+                    border: `1px solid ${GH.border}`,
+                    borderRadius: 6,
+                    padding: '5px 12px',
+                    color: GH.text,
+                    fontSize: 13,
+                    cursor: 'pointer',
+                  }}
+                >
+                  <option>{label}</option>
+                </select>
+              ))}
+            </div>
           </div>
 
           {/* Repo list */}
@@ -291,64 +300,87 @@ export default function DevBranch() {
                   padding: '24px 16px',
                   transition: 'background 0.1s',
                   cursor: 'default',
+                  display: 'flex',
+                  gap: 16,
                 }}
               >
-                {/* Name + badge */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-                  <Link
-                    href={`/dev_branch/${repo.slug}`}
-                    className="gh-repo-link"
-                    style={{ color: GH.link, textDecoration: 'none', fontWeight: 600, fontSize: 16 }}
-                  >
-                    {repo.name}
-                  </Link>
-                  <span style={badge(repo.isPublic)}>{repo.isPublic ? 'Public' : 'Internal'}</span>
+                {/* Icon for mobile */}
+                <div
+                  className="repo-icon"
+                  style={{
+                    width: 48,
+                    height: 48,
+                    borderRadius: 8,
+                    background: repo.iconBg,
+                    display: 'none',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: 24,
+                    flexShrink: 0,
+                  }}
+                >
+                  {repo.icon}
                 </div>
+
+                {/* Repo content */}
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  {/* Name + badge */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                    <Link
+                      href={`/dev_branch/${repo.slug}`}
+                      className="gh-repo-link"
+                      style={{ color: GH.link, textDecoration: 'none', fontWeight: 600, fontSize: 16 }}
+                    >
+                      {repo.name}
+                    </Link>
+                    <span style={badge(repo.isPublic)}>{repo.isPublic ? 'Public' : 'Internal'}</span>
+                  </div>
 
                 {/* Description */}
                 <p style={{ color: GH.textMuted, fontSize: 13, margin: '0 0 10px', maxWidth: 560 }}>
                   {repo.description}
                 </p>
 
-                {/* Topics */}
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginBottom: 12 }}>
-                  {repo.topics.map((t) => (
-                    <span
-                      key={t}
-                      className="gh-topic"
-                      style={{
-                        background: 'rgba(31,111,235,0.15)',
-                        color: '#58a6ff',
-                        borderRadius: 99,
-                        padding: '2px 10px',
-                        fontSize: 12,
-                        cursor: 'pointer',
-                        transition: 'background 0.1s',
-                      }}
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
+                  {/* Topics */}
+                  <div className="repo-topics" style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginBottom: 12 }}>
+                    {repo.topics.map((t) => (
+                      <span
+                        key={t}
+                        className="gh-topic"
+                        style={{
+                          background: 'rgba(31,111,235,0.15)',
+                          color: '#58a6ff',
+                          borderRadius: 99,
+                          padding: '2px 10px',
+                          fontSize: 12,
+                          cursor: 'pointer',
+                          transition: 'background 0.1s',
+                        }}
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
 
-                {/* Meta */}
-                <div style={{ display: 'flex', gap: 16, color: GH.textMuted, fontSize: 12, alignItems: 'center' }}>
-                  <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                    <span
-                      style={{
-                        width: 12,
-                        height: 12,
-                        borderRadius: '50%',
-                        background: repo.langColor,
-                        display: 'inline-block',
-                        flexShrink: 0,
-                      }}
-                    />
-                    {repo.language}
-                  </span>
-                  <span>⭐ {repo.stars}</span>
-                  <span>⑂ {repo.forks}</span>
-                  <span>Updated today</span>
+                  {/* Meta */}
+                  <div style={{ display: 'flex', gap: 16, color: GH.textMuted, fontSize: 12, alignItems: 'center' }}>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                      <span
+                        style={{
+                          width: 12,
+                          height: 12,
+                          borderRadius: '50%',
+                          background: repo.langColor,
+                          display: 'inline-block',
+                          flexShrink: 0,
+                        }}
+                      />
+                      {repo.language}
+                    </span>
+                    <span>⭐ {repo.stars}</span>
+                    <span>⑂ {repo.forks}</span>
+                    <span>Updated today</span>
+                  </div>
                 </div>
               </div>
             ))}
