@@ -53,12 +53,25 @@ All Palabras content is mobile-friendly.
 ## Section 4: Dev Branch
 **Status:** ✅ Complete
 
-Mobile improvements:
+### Subsections:
+- ✅ Landing page
+- ✅ space-apis subpage
+- ✅ open-source subpage
+- ✅ ssip-projects subpage (no sidebar to move)
+
+Mobile improvements (Landing page):
 - Hidden sidebar/avatar column on mobile devices
 - Added colorful icons to the left of each repository link (space-apis 🚀, open-source 🔓, ssip-projects 📁)
 - Simplified layout following GitHub mobile app style
 - Hidden tabs and filter selects on mobile to maximize content space
 - Removed topic tags on mobile for cleaner appearance
+
+Mobile improvements (Subpages):
+- Moved About sidebar to header block below navigation
+- About header includes description, stats, and languages used
+- Hidden desktop sidebar on mobile
+- API/project links stretch across full browser width
+- Compact layout optimized for mobile viewing
 
 ---
 
