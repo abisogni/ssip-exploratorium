@@ -349,21 +349,42 @@ function drawScene(
   ctx.save()
   ctx.translate(shipScrn.x, shipScrn.y)
   ctx.rotate(shipAngle)
+  // Outline for contrast
   ctx.beginPath()
-  ctx.moveTo(9, 0)
-  ctx.lineTo(-6, -4.5)
-  ctx.lineTo(-6,  4.5)
+  ctx.moveTo(14, 0)
+  ctx.lineTo(-9, -7)
+  ctx.lineTo(-9,  7)
   ctx.closePath()
-  ctx.fillStyle = 'rgba(235,220,255,0.95)'
+  ctx.strokeStyle = 'rgba(128,92,232,0.6)'
+  ctx.lineWidth = 2
+  ctx.stroke()
+  // Fill
+  ctx.beginPath()
+  ctx.moveTo(14, 0)
+  ctx.lineTo(-9, -7)
+  ctx.lineTo(-9,  7)
+  ctx.closePath()
+  ctx.fillStyle = 'rgba(240,228,255,0.97)'
   ctx.fill()
   ctx.restore()
 
+  // Pulsing ring around ship when aiming (makes it easy to find)
+  if (phase === 'aiming') {
+    const ringPulse = 0.5 + 0.5 * Math.sin(tick * 0.12)
+    const ringR = 22 + 6 * ringPulse
+    ctx.beginPath()
+    ctx.arc(shipScrn.x, shipScrn.y, ringR, 0, Math.PI * 2)
+    ctx.strokeStyle = `rgba(200,175,255,${(0.25 + 0.20 * ringPulse).toFixed(3)})`
+    ctx.lineWidth = 1.5
+    ctx.stroke()
+  }
+
   // Drag hint (no aim set yet in aiming phase)
   if (phase === 'aiming' && (!aimVel || (aimVel.vx === 0 && aimVel.vy === 0))) {
-    ctx.fillStyle = 'rgba(200,175,255,0.38)'
-    ctx.font = `9px ${MONO}`
+    ctx.fillStyle = 'rgba(210,190,255,0.70)'
+    ctx.font = `bold 11px ${MONO}`
     ctx.textAlign = 'center'
-    ctx.fillText('drag to aim', shipScrn.x, shipScrn.y - 22)
+    ctx.fillText('drag to aim', shipScrn.x, shipScrn.y - 38)
     ctx.textAlign = 'left'
   }
 }
@@ -596,71 +617,9 @@ export default function OrbitalHeist() {
   const lv          = LEVELS[levelIdx]
   const isLastLevel = levelIdx === LEVELS.length - 1
 
-  // ── Briefing screen ──────────────────────────────────────────────────────────
-  if (phase === 'briefing') {
-    return (
-      <main style={{ background: '#04020f', minHeight: '100vh', color: '#c8b8e8', fontFamily: MONO, position: 'relative' }}>
-        <Link
-          href="/puzzles"
-          style={{ position: 'absolute', top: '1.5rem', left: '1.5rem', color: 'rgba(128,92,232,0.5)', textDecoration: 'none', fontSize: '0.8rem', letterSpacing: '0.1em', transition: 'color 0.2s' }}
-          onMouseEnter={e => (e.currentTarget.style.color = 'rgba(170,130,255,0.9)')}
-          onMouseLeave={e => (e.currentTarget.style.color = 'rgba(128,92,232,0.5)')}
-        >
-          ← puzzles
-        </Link>
-
-        <div style={{ maxWidth: 660, margin: '0 auto', padding: '8rem 2rem 4rem' }}>
-          <p style={{ fontSize: '0.68rem', letterSpacing: '0.35em', textTransform: 'uppercase', color: 'rgba(128,92,232,0.8)', marginBottom: '1.5rem' }}>
-            MISSION BRIEFING — SPACE / ORBITAL MECHANICS
-          </p>
-
-          <h1 style={{ fontFamily: SERIF, fontSize: 'clamp(2.2rem, 5vw, 3.2rem)', fontWeight: 'bold', fontStyle: 'italic', color: '#e0d0ff', lineHeight: 1.1, marginBottom: '2.5rem' }}>
-            Orbital Heist
-          </h1>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '2.5rem' }}>
-            {[
-              'Your spacecraft has one chance. Once launched, you cannot adjust your trajectory.',
-              'Celestial bodies exert gravitational pull on everything that passes near them.',
-              'Use this to your advantage — or it will work against you.',
-            ].map((t, i) => (
-              <p key={i} style={{ fontFamily: SERIF, fontSize: '1rem', fontStyle: 'italic', color: 'rgba(200,185,235,0.72)', lineHeight: 1.78, margin: 0 }}>
-                {t}
-              </p>
-            ))}
-          </div>
-
-          <div style={{ background: 'rgba(80,50,180,0.08)', border: '1px solid rgba(128,92,232,0.16)', borderRadius: 4, padding: '1.2rem 1.5rem', marginBottom: '3rem', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
-            <p style={{ fontSize: '0.65rem', letterSpacing: '0.28em', color: 'rgba(128,92,232,0.8)', margin: '0 0 0.3rem' }}>
-              HOW TO PLAY
-            </p>
-            {[
-              ['Drag from the spacecraft', 'sets your launch direction and speed'],
-              ['Dotted line',              'shows a preview of your trajectory'],
-              ['LAUNCH',                   'sends the spacecraft on its path'],
-              ['Reach the beacon',         'to complete each level'],
-            ].map(([label, desc]) => (
-              <div key={label} style={{ display: 'flex', gap: '1.4rem', alignItems: 'baseline' }}>
-                <span style={{ color: '#d0c0f0', minWidth: 160, fontSize: '0.88rem' }}>{label}</span>
-                <span style={{ color: 'rgba(200,185,235,0.45)', fontSize: '0.82rem', fontFamily: SERIF, fontStyle: 'italic' }}>{desc}</span>
-              </div>
-            ))}
-          </div>
-
-          <button
-            onClick={startGame}
-            style={{ background: 'rgba(128,92,232,0.14)', border: '1px solid rgba(128,92,232,0.45)', borderRadius: 4, color: '#d0c0f0', fontFamily: MONO, fontSize: '0.85rem', letterSpacing: '0.18em', padding: '0.75rem 2rem', cursor: 'pointer', transition: 'background 0.2s, border-color 0.2s' }}
-            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(128,92,232,0.26)'; e.currentTarget.style.borderColor = 'rgba(170,130,255,0.7)' }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'rgba(128,92,232,0.14)'; e.currentTarget.style.borderColor = 'rgba(128,92,232,0.45)' }}
-          >
-            BEGIN MISSION →
-          </button>
-        </div>
-      </main>
-    )
-  }
-
-  // ── Game screen ──────────────────────────────────────────────────────────────
+  // ── Always render game layout so canvas mounts immediately ────────────────────
+  // Briefing is shown as a full-screen overlay — this keeps the canvas in the
+  // DOM so the animation-loop useEffect can attach to it on first mount.
   return (
     <main style={{ background: '#04020f', height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'hidden', color: '#c8b8e8', fontFamily: MONO }}>
 
@@ -675,12 +634,20 @@ export default function OrbitalHeist() {
           ← puzzles
         </Link>
         <span style={{ color: 'rgba(128,92,232,0.22)', fontSize: '0.7rem' }}>|</span>
-        <span style={{ fontSize: '0.7rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(128,92,232,0.8)' }}>
-          {lv.name}
-        </span>
-        <span style={{ fontSize: '0.72rem', color: 'rgba(200,185,235,0.30)', fontFamily: SERIF, fontStyle: 'italic' }}>
-          — {lv.subtitle}
-        </span>
+        {phase === 'briefing' ? (
+          <span style={{ fontSize: '0.7rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(128,92,232,0.5)' }}>
+            ORBITAL HEIST
+          </span>
+        ) : (
+          <>
+            <span style={{ fontSize: '0.7rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(128,92,232,0.8)' }}>
+              {lv.name}
+            </span>
+            <span style={{ fontSize: '0.72rem', color: 'rgba(200,185,235,0.30)', fontFamily: SERIF, fontStyle: 'italic' }}>
+              — {lv.subtitle}
+            </span>
+          </>
+        )}
       </div>
 
       {/* Canvas area */}
@@ -696,6 +663,51 @@ export default function OrbitalHeist() {
           onTouchMove={onTouchMove}
           onTouchEnd={onTouchEnd}
         />
+
+        {/* Briefing overlay — rendered over canvas so canvas stays mounted */}
+        {phase === 'briefing' && (
+          <div style={{ position: 'absolute', inset: 0, background: '#04020f', overflowY: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <div style={{ maxWidth: 660, width: '100%', padding: '5rem 2rem 4rem' }}>
+              <p style={{ fontSize: '0.68rem', letterSpacing: '0.35em', textTransform: 'uppercase', color: 'rgba(128,92,232,0.8)', marginBottom: '1.5rem' }}>
+                MISSION BRIEFING — SPACE / ORBITAL MECHANICS
+              </p>
+              <h1 style={{ fontFamily: SERIF, fontSize: 'clamp(2.2rem, 5vw, 3.2rem)', fontWeight: 'bold', fontStyle: 'italic', color: '#e0d0ff', lineHeight: 1.1, marginBottom: '2.5rem' }}>
+                Orbital Heist
+              </h1>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '2.5rem' }}>
+                {[
+                  'Your spacecraft has one chance. Once launched, you cannot adjust your trajectory.',
+                  'Celestial bodies exert gravitational pull on everything that passes near them.',
+                  'Use this to your advantage — or it will work against you.',
+                ].map((t, i) => (
+                  <p key={i} style={{ fontFamily: SERIF, fontSize: '1rem', fontStyle: 'italic', color: 'rgba(200,185,235,0.72)', lineHeight: 1.78, margin: 0 }}>{t}</p>
+                ))}
+              </div>
+              <div style={{ background: 'rgba(80,50,180,0.08)', border: '1px solid rgba(128,92,232,0.16)', borderRadius: 4, padding: '1.2rem 1.5rem', marginBottom: '3rem', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+                <p style={{ fontSize: '0.65rem', letterSpacing: '0.28em', color: 'rgba(128,92,232,0.8)', margin: '0 0 0.3rem' }}>HOW TO PLAY</p>
+                {([
+                  ['Drag from the spacecraft', 'sets launch direction and speed'],
+                  ['Dotted line preview',      'shows where your trajectory will go'],
+                  ['LAUNCH button',            'sends the spacecraft on its path'],
+                  ['Reach the beacon',         'to complete each level'],
+                ] as [string, string][]).map(([label, desc]) => (
+                  <div key={label} style={{ display: 'flex', gap: '1.4rem', alignItems: 'baseline' }}>
+                    <span style={{ color: '#d0c0f0', minWidth: 180, fontSize: '0.88rem' }}>{label}</span>
+                    <span style={{ color: 'rgba(200,185,235,0.45)', fontSize: '0.82rem', fontFamily: SERIF, fontStyle: 'italic' }}>{desc}</span>
+                  </div>
+                ))}
+              </div>
+              <button
+                onClick={startGame}
+                style={{ background: 'rgba(128,92,232,0.14)', border: '1px solid rgba(128,92,232,0.45)', borderRadius: 4, color: '#d0c0f0', fontFamily: MONO, fontSize: '0.85rem', letterSpacing: '0.18em', padding: '0.75rem 2rem', cursor: 'pointer', transition: 'background 0.2s, border-color 0.2s' }}
+                onMouseEnter={e => { e.currentTarget.style.background = 'rgba(128,92,232,0.26)'; e.currentTarget.style.borderColor = 'rgba(170,130,255,0.7)' }}
+                onMouseLeave={e => { e.currentTarget.style.background = 'rgba(128,92,232,0.14)'; e.currentTarget.style.borderColor = 'rgba(128,92,232,0.45)' }}
+              >
+                BEGIN MISSION →
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Bottom control bar — aiming only */}
         {phase === 'aiming' && (
