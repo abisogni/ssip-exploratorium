@@ -236,6 +236,61 @@ export default function OpenSource() {
         ))}
       </div>
 
+      {/* Mobile Header — About (hidden on desktop) */}
+      <div
+        className="mobile-header-about"
+        style={{
+          display: 'none',
+          background: GH.bgSecondary,
+          borderBottom: `1px solid ${GH.border}`,
+          padding: '16px 24px',
+        }}
+      >
+        <div style={{ marginBottom: 12 }}>
+          <h2 style={{ fontSize: 14, fontWeight: 600, margin: '0 0 8px', color: GH.text }}>
+            About
+          </h2>
+          <p style={{ color: GH.textMuted, fontSize: 13, margin: 0, lineHeight: 1.5 }}>
+            Handpicked open-source projects in aerospace, astrodynamics, and spacecraft engineering. Actively maintained. Battle-tested.
+          </p>
+        </div>
+
+        <div style={{ display: 'flex', gap: 16, fontSize: 12, color: GH.textMuted }}>
+          <div>
+            <strong style={{ color: GH.text }}>{PROJECTS.length}</strong> projects
+          </div>
+          <div>
+            <strong style={{ color: GH.text }}>{CATEGORIES.length}</strong> categories
+          </div>
+        </div>
+
+        <div style={{ marginTop: 12, fontSize: 12 }}>
+          <div style={{ color: GH.textMuted, marginBottom: 6 }}>Languages:</div>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            {[
+              { lang: 'Python', color: '#3572A5' },
+              { lang: 'C++', color: '#f34b7d' },
+              { lang: 'JavaScript', color: '#f1e05a' },
+              { lang: 'Java', color: '#b07219' },
+              { lang: 'C', color: '#555555' },
+            ].map(({ lang, color }) => (
+              <div key={lang} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                <span
+                  style={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: '50%',
+                    background: color,
+                    flexShrink: 0,
+                  }}
+                />
+                <span style={{ color: GH.text }}>{lang}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* Content */}
       <div
         style={{
@@ -393,7 +448,7 @@ export default function OpenSource() {
         </main>
 
         {/* Sidebar */}
-        <aside style={{ width: 248, flexShrink: 0 }}>
+        <aside className="dev-branch-sidebar-about" style={{ width: 248, flexShrink: 0 }}>
           <h2
             style={{
               fontSize: 14,

@@ -27,6 +27,16 @@ export default function DevBranchLayout({ children }: { children: React.ReactNod
             display: none !important;
           }
 
+          /* Hide About sidebar on subpages on mobile */
+          .dev-branch-sidebar-about {
+            display: none !important;
+          }
+
+          /* Show mobile header About on subpages */
+          .mobile-header-about {
+            display: block !important;
+          }
+
           /* Show repo icons on mobile */
           .repo-icon {
             display: flex !important;

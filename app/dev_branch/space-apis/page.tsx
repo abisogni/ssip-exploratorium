@@ -277,6 +277,59 @@ export default function SpaceApis() {
         ))}
       </div>
 
+      {/* Mobile Header — About (hidden on desktop) */}
+      <div
+        className="mobile-header-about"
+        style={{
+          display: 'none',
+          background: GH.bgSecondary,
+          borderBottom: `1px solid ${GH.border}`,
+          padding: '16px 24px',
+        }}
+      >
+        <div style={{ marginBottom: 12 }}>
+          <h2 style={{ fontSize: 14, fontWeight: 600, margin: '0 0 8px', color: GH.text }}>
+            About
+          </h2>
+          <p style={{ color: GH.textMuted, fontSize: 13, margin: 0, lineHeight: 1.5 }}>
+            A curated directory of open space APIs — no paywalls, publicly accessible, or free-tier available.
+          </p>
+        </div>
+
+        <div style={{ display: 'flex', gap: 16, fontSize: 12, color: GH.textMuted }}>
+          <div>
+            <strong style={{ color: GH.text }}>10</strong> APIs
+          </div>
+          <div>
+            <strong style={{ color: GH.text }}>3</strong> auth types
+          </div>
+        </div>
+
+        <div style={{ marginTop: 12, fontSize: 12 }}>
+          <div style={{ color: GH.textMuted, marginBottom: 6 }}>Languages:</div>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            {[
+              { lang: 'JSON', color: '#f1e05a' },
+              { lang: 'Python', color: '#3572A5' },
+              { lang: 'REST', color: '#3fb950' },
+            ].map(({ lang, color }) => (
+              <div key={lang} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                <span
+                  style={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: '50%',
+                    background: color,
+                    flexShrink: 0,
+                  }}
+                />
+                <span style={{ color: GH.text }}>{lang}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* Content */}
       <div
         style={{
@@ -477,7 +530,7 @@ export default function SpaceApis() {
         </main>
 
         {/* Sidebar — About */}
-        <aside style={{ width: 248, flexShrink: 0 }}>
+        <aside className="dev-branch-sidebar-about" style={{ width: 248, flexShrink: 0 }}>
           <h2
             style={{
               fontSize: 14,
