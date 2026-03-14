@@ -1,9 +1,28 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import * as THREE from 'three'
 import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js'
+
+// Mobile detection hook
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => {
+      const hasTouchScreen = 'ontouchstart' in window || navigator.maxTouchPoints > 0
+      const isSmallScreen = window.innerWidth < 768
+      setIsMobile(hasTouchScreen && isSmallScreen)
+    }
+
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  return isMobile
+}
 
 const PLANETS = [
   {
@@ -182,6 +201,7 @@ function buildSatellite(): THREE.Group {
 export default function SpaceScene() {
   const mountRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
+  const isMobile = useIsMobile()
 
   useEffect(() => {
     const mount = mountRef.current
@@ -189,6 +209,10 @@ export default function SpaceScene() {
 
     const w = mount.clientWidth
     const h = mount.clientHeight
+
+    // Mobile optimization: speed up orbits and bring planets closer
+    const orbitSpeedMultiplier = isMobile ? 2.5 : 1
+    const orbitRadiusMultiplier = isMobile ? 0.75 : 1
 
     // Renderer
     const renderer = new THREE.WebGLRenderer({ antialias: true })
@@ -340,7 +364,7 @@ export default function SpaceScene() {
     // Faint orbit rings — each oriented to match its planet's orbit plane
     PLANETS.forEach((p) => {
       const torus = new THREE.Mesh(
-        new THREE.TorusGeometry(p.orbitRadius, 0.012, 4, 180),
+        new THREE.TorusGeometry(p.orbitRadius * orbitRadiusMultiplier, 0.012, 4, 180),
         new THREE.MeshBasicMaterial({ color: 0x223344, transparent: true, opacity: 0.2 })
       )
       // Compute orbit plane normal: R_Y(node) * R_X(incl) * Y_hat
@@ -426,8 +450,62 @@ export default function SpaceScene() {
       }
     }
 
+    // --- Touch controls for camera rotation (mobile) ---
+    let touchStartX = 0
+    let touchStartY = 0
+    let cameraAngleY = 0
+    let cameraAngleX = 0
+    let isDragging = false
+
+    function onTouchStart(e: TouchEvent) {
+      if (e.touches.length === 1) {
+        touchStartX = e.touches[0].clientX
+        touchStartY = e.touches[0].clientY
+        isDragging = true
+      }
+    }
+
+    function onTouchMove(e: TouchEvent) {
+      if (!isDragging || e.touches.length !== 1) return
+
+      const deltaX = e.touches[0].clientX - touchStartX
+      const deltaY = e.touches[0].clientY - touchStartY
+
+      // Update camera rotation angles based on drag
+      cameraAngleY += deltaX * 0.005
+      cameraAngleX -= deltaY * 0.003
+
+      // Clamp vertical rotation to prevent flipping
+      cameraAngleX = Math.max(-0.5, Math.min(0.5, cameraAngleX))
+
+      // Update camera position in orbit around origin
+      const radius = 24
+      camera.position.x = Math.sin(cameraAngleY) * radius * Math.cos(cameraAngleX)
+      camera.position.z = Math.cos(cameraAngleY) * radius * Math.cos(cameraAngleX)
+      camera.position.y = 1.5 + Math.sin(cameraAngleX) * radius * 0.3
+      camera.lookAt(0, 0, 0)
+
+      touchStartX = e.touches[0].clientX
+      touchStartY = e.touches[0].clientY
+
+      // Update mouse position for raycasting
+      const rect = mount!.getBoundingClientRect()
+      mouse.x = ((e.touches[0].clientX - rect.left) / rect.width) * 2 - 1
+      mouse.y = -((e.touches[0].clientY - rect.top) / rect.height) * 2 + 1
+    }
+
+    function onTouchEnd() {
+      isDragging = false
+    }
+
     mount.addEventListener('mousemove', onMouseMove)
     mount.addEventListener('click', onClick)
+
+    if (isMobile) {
+      mount.addEventListener('touchstart', onTouchStart)
+      mount.addEventListener('touchmove', onTouchMove)
+      mount.addEventListener('touchend', onTouchEnd)
+    }
 
     // --- Animation loop ---
     let animId: number
@@ -453,13 +531,13 @@ export default function SpaceScene() {
 
       // Planet orbits — each in its own inclined plane
       PLANETS.forEach((p, i) => {
-        angles[i] += p.orbitSpeed
+        angles[i] += p.orbitSpeed * orbitSpeedMultiplier
         const a = angles[i]
         const incl = p.orbitIncl
         const node = p.orbitNode
         // Start in XZ plane
-        const xOrb = Math.cos(a) * p.orbitRadius
-        const zOrb = Math.sin(a) * p.orbitRadius
+        const xOrb = Math.cos(a) * p.orbitRadius * orbitRadiusMultiplier
+        const zOrb = Math.sin(a) * p.orbitRadius * orbitRadiusMultiplier
         // Apply inclination around X axis
         const yInc = -zOrb * Math.sin(incl)
         const zInc = zOrb * Math.cos(incl)
@@ -545,6 +623,11 @@ export default function SpaceScene() {
       if (stopCipherAnim) stopCipherAnim()
       mount.removeEventListener('mousemove', onMouseMove)
       mount.removeEventListener('click', onClick)
+      if (isMobile) {
+        mount.removeEventListener('touchstart', onTouchStart)
+        mount.removeEventListener('touchmove', onTouchMove)
+        mount.removeEventListener('touchend', onTouchEnd)
+      }
       window.removeEventListener('resize', onResize)
       renderer.dispose()
       if (mount.contains(renderer.domElement)) {
@@ -554,7 +637,7 @@ export default function SpaceScene() {
         mount.removeChild(labelRenderer.domElement)
       }
     }
-  }, [router])
+  }, [router, isMobile])
 
   return <div ref={mountRef} style={{ position: 'fixed', inset: 0 }} />
 }
