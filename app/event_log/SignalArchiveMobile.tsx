@@ -870,7 +870,7 @@ export default function SignalArchiveMobile({ events }: Props) {
                 key={currentPhotoIdx}
                 src={lockedEvent!.photoUrls[currentPhotoIdx]}
                 alt={`${lockedEvent!.name} — photo ${currentPhotoIdx + 1}`}
-                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'contain' }}
               />
               <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom,transparent 45%,rgba(2,4,8,.9) 100%)', zIndex: 1 }} />
               <div style={{ position: 'absolute', top: 10, right: 12, fontSize: 9, letterSpacing: '.2em', color: hexRgba(tc, 0.6), zIndex: 2 }}>

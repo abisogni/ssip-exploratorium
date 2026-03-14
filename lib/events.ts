@@ -34,7 +34,10 @@ function computeSnr(type: EventTypeCode, participants: number): string {
 }
 
 function cloudinaryUrl(publicId: string): string {
-  return `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/${publicId}`
+  // w_1200: cap width (retina mobile + small desktop)
+  // q_auto: Cloudinary picks optimal quality
+  // f_auto: serve WebP/AVIF when the browser supports it
+  return `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/w_1200,q_auto,f_auto/${publicId}`
 }
 
 export async function getEvents(): Promise<SSIPEvent[]> {
