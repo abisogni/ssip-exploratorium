@@ -79,6 +79,7 @@ const PUZZLES_DATA: { id: string; title: string; titleParts?: [string, string]; 
     title: 'Orbital Heist',
     theme: 'SPACE',
     desc: 'Thread a spacecraft through gravity wells to reach the target zone.',
+    route: '/puzzles/orbital-heist',
   },
   {
     id: 'dead-reckoning',
