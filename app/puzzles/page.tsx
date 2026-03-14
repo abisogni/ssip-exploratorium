@@ -72,6 +72,7 @@ const PUZZLES_DATA: { id: string; title: string; titleParts?: [string, string]; 
     title: 'Exoplanet Detective',
     theme: 'SPACE',
     desc: 'Analyze a stellar light curve to identify a transiting exoplanet.',
+    route: '/puzzles/exoplanet-detective',
   },
   {
     id: 'orbital-heist',
