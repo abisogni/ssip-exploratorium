@@ -25,5 +25,5 @@ if (process.env.NODE_ENV === 'development') {
 
 export async function getDb() {
   const c = await clientPromise
-  return c.db('v1-production')
+  return c.db(process.env.MONGODB_NAME ?? 'v1-production')
 }
