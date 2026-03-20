@@ -2,6 +2,9 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
+
+const MobilePuzzleMap = dynamic(() => import('./MobilePuzzleMap'), { ssr: false })
 
 // PUZZLES shifted 713 places (713 mod 26 = 11) → AFKKWPD
 const CIPHER_TITLE = 'AFKKWPD'
@@ -291,255 +294,290 @@ export default function Puzzles() {
           </h1>
         </div>
 
-        {/* ── Section 2: Puzzle cards ── */}
+        {/* ── Section 2: Puzzle cards (desktop) / Map (mobile) ── */}
         <div
           ref={section2Ref}
           style={{
             position: 'relative',
             minHeight: '100vh',
-            background: PUZZLES_BG,
-            paddingBottom: '8vh',
+            background: isMobile ? '#04060f' : PUZZLES_BG,
+            paddingBottom: isMobile ? 0 : '8vh',
           }}
         >
-          {/* Grain overlay */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              backgroundImage: `url("${GRAIN_URI}")`,
-              backgroundSize: '200px 200px',
-              opacity: 0.11,
-              mixBlendMode: 'overlay',
-            }}
-          />
-          {/* Edge vignette */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background:
-                'radial-gradient(ellipse 90% 85% at 50% 50%, transparent 40%, rgba(2,3,10,0.9) 100%)',
-            }}
-          />
+          {isMobile ? (
 
-          {/* Content */}
-          <div style={{ position: 'relative', zIndex: 2 }}>
+            /* ── Mobile: full-screen Luzern map with puzzle pins ── */
+            <div style={{ position: 'relative', height: '100vh', overflow: 'hidden' }}>
+              <MobilePuzzleMap />
 
-            {/* Back link */}
-            <Link
-              href="/"
-              style={{
-                position: 'absolute',
-                top: '2rem',
-                right: '2rem',
-                fontFamily: "'Times New Roman', Times, serif",
-                fontSize: '0.95rem',
-                letterSpacing: '0.08em',
-                color: 'rgba(0,190,210,0.6)',
-                textDecoration: 'none',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                zIndex: 10,
-                transition: 'color 0.2s',
-              }}
-              onMouseEnter={e => (e.currentTarget.style.color = 'rgba(0,210,230,1)')}
-              onMouseLeave={e => (e.currentTarget.style.color = 'rgba(0,190,210,0.6)')}
-            >
-              <span style={{ fontSize: '1.2rem' }}>←</span>
-              <span>back to Exploratorium space</span>
-            </Link>
-
-            {/* Mobile notice */}
-            {isMobile && (
+              {/* Overlay nav bar — gradient fades into the map */}
               <div
                 style={{
-                  margin: '5.5rem 1.5rem 0 1.5rem',
-                  padding: '1rem 1.3rem',
-                  border: '1px solid rgba(0,190,210,0.18)',
-                  borderRadius: '4px',
-                  background: 'rgba(0,190,210,0.05)',
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  zIndex: 900,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '1rem 1.25rem 2.5rem',
+                  background: 'linear-gradient(to bottom, rgba(4,6,15,0.82) 0%, transparent 100%)',
+                  pointerEvents: 'none',
                 }}
               >
-                <p
+                <Link
+                  href="/"
                   style={{
-                    fontFamily: 'var(--font-geist-mono, monospace)',
-                    fontSize: '0.72rem',
+                    pointerEvents: 'all',
+                    fontFamily: "'Times New Roman', Times, serif",
+                    fontStyle: 'italic',
+                    fontSize: '0.88rem',
                     letterSpacing: '0.06em',
-                    color: 'rgba(0,190,210,0.65)',
-                    lineHeight: 1.7,
-                    margin: 0,
+                    color: 'rgba(0,190,210,0.7)',
+                    textDecoration: 'none',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.35rem',
+                  }}
+                  onTouchStart={e => (e.currentTarget.style.color = 'rgba(0,210,230,1)')}
+                  onTouchEnd={e => (e.currentTarget.style.color = 'rgba(0,190,210,0.7)')}
+                >
+                  <span style={{ fontSize: '1rem' }}>←</span> Exploratorium
+                </Link>
+                <span
+                  style={{
+                    fontFamily: "'Times New Roman', Times, serif",
+                    fontStyle: 'italic',
+                    fontSize: '1.05rem',
+                    color: 'rgba(200,230,255,0.7)',
+                    letterSpacing: '0.04em',
                   }}
                 >
-                  These puzzles are formatted for desktop screens — the experience may be limited on
-                  mobile. A mobile-optimised version is coming soon.
-                </p>
+                  puzzles
+                </span>
               </div>
-            )}
+            </div>
 
-            {/* Page header */}
-            <div style={{ textAlign: 'center', paddingTop: '6vh', paddingBottom: '5vh' }}>
-              <p
-                style={{
-                  fontFamily: "'Times New Roman', Times, serif",
-                  fontSize: '0.72rem',
-                  letterSpacing: '0.32em',
-                  textTransform: 'uppercase',
-                  color: 'rgba(0,190,210,0.32)',
-                  marginBottom: '0.6rem',
-                }}
-              >
-                SSIP Exploratorium
-              </p>
-              <h1
-                style={{
-                  fontFamily: "'Times New Roman', Times, serif",
-                  fontSize: 'clamp(2.2rem, 4vw, 3.4rem)',
-                  fontWeight: 'bold',
-                  fontStyle: 'italic',
-                  color: 'rgba(200,230,255,0.82)',
-                  lineHeight: 1,
-                  marginBottom: '0.85rem',
-                  letterSpacing: '0.04em',
-                }}
-              >
-                puzzles
-              </h1>
-              <p
-                style={{
-                  fontFamily: "'Times New Roman', Times, serif",
-                  fontSize: '0.95rem',
-                  fontStyle: 'italic',
-                  color: 'rgba(150,200,230,0.42)',
-                  letterSpacing: '0.06em',
-                  marginBottom: '2.5vh',
-                }}
-              >
-                a collection of interactive challenges
-              </p>
+          ) : (
+
+            /* ── Desktop: grain + vignette + card grid ── */
+            <>
+              {/* Grain overlay */}
               <div
+                className="absolute inset-0 pointer-events-none"
                 style={{
-                  width: '120px',
-                  height: '1px',
-                  background: 'rgba(0,190,210,0.18)',
-                  margin: '0 auto',
+                  backgroundImage: `url("${GRAIN_URI}")`,
+                  backgroundSize: '200px 200px',
+                  opacity: 0.11,
+                  mixBlendMode: 'overlay',
                 }}
               />
-            </div>
+              {/* Edge vignette */}
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background:
+                    'radial-gradient(ellipse 90% 85% at 50% 50%, transparent 40%, rgba(2,3,10,0.9) 100%)',
+                }}
+              />
 
-            {/* Cards grid */}
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(3, 1fr)',
-                gap: '1.5rem',
-                maxWidth: '980px',
-                margin: '0 auto',
-                padding: '0 2rem',
-              }}
-            >
-              {PUZZLES_DATA.map(p => {
-                const hovered = hoveredId === p.id
-                const cardStyle: React.CSSProperties = {
-                  background: hovered ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.025)',
-                  border: `1px solid ${hovered ? THEME_BORDER[p.theme] : 'rgba(255,255,255,0.06)'}`,
-                  borderRadius: '6px',
-                  padding: '1.5rem 1.4rem',
-                  cursor: p.route ? 'pointer' : 'default',
-                  transition: 'background 0.25s, border-color 0.25s, box-shadow 0.25s, transform 0.25s',
-                  transform: hovered ? 'translateY(-3px)' : 'translateY(0)',
-                  boxShadow: hovered
-                    ? `0 8px 32px ${THEME_GLOW[p.theme]}, 0 0 0 1px ${THEME_BORDER[p.theme]}`
-                    : 'none',
-                  textDecoration: 'none',
-                  display: 'block',
-                }
-                const inner = (
-                  <>
-                    <div style={{ marginBottom: '0.75rem' }}>
-                      <span
-                        style={{
-                          fontFamily: 'var(--font-geist-mono, monospace)',
-                          fontSize: '0.7rem',
-                          letterSpacing: '0.18em',
-                          color: THEME_ACCENT[p.theme],
-                          opacity: hovered ? 1 : 0.7,
-                          transition: 'opacity 0.25s',
-                        }}
-                      >
-                        {p.theme}
-                      </span>
-                    </div>
+              {/* Content */}
+              <div style={{ position: 'relative', zIndex: 2 }}>
 
-                    <h2
-                      style={{
-                        fontFamily: 'var(--font-geist-mono, monospace)',
-                        fontSize: p.titleFontSize ?? '1.02rem',
-                        fontWeight: 600,
-                        color: hovered ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.72)',
-                        marginBottom: '0.65rem',
-                        lineHeight: 1.35,
-                        transition: 'color 0.25s',
-                        letterSpacing: '0.01em',
-                      }}
-                    >
-                      {p.titleParts
-                        ? <>{p.titleParts[0]}<strong>{p.titleParts[1]}</strong></>
-                        : p.title}
-                    </h2>
+                {/* Back link */}
+                <Link
+                  href="/"
+                  style={{
+                    position: 'absolute',
+                    top: '2rem',
+                    right: '2rem',
+                    fontFamily: "'Times New Roman', Times, serif",
+                    fontSize: '0.95rem',
+                    letterSpacing: '0.08em',
+                    color: 'rgba(0,190,210,0.6)',
+                    textDecoration: 'none',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    zIndex: 10,
+                    transition: 'color 0.2s',
+                  }}
+                  onMouseEnter={e => (e.currentTarget.style.color = 'rgba(0,210,230,1)')}
+                  onMouseLeave={e => (e.currentTarget.style.color = 'rgba(0,190,210,0.6)')}
+                >
+                  <span style={{ fontSize: '1.2rem' }}>←</span>
+                  <span>back to Exploratorium space</span>
+                </Link>
 
-                    <p
-                      style={{
-                        fontFamily: "'Times New Roman', Times, serif",
-                        fontSize: '0.92rem',
-                        fontStyle: 'italic',
-                        color: 'rgba(180,210,230,0.5)',
-                        lineHeight: 1.6,
-                        marginBottom: '1.1rem',
-                      }}
-                    >
-                      {p.desc}
-                    </p>
-
-                    <div
-                      style={{
-                        fontFamily: 'var(--font-geist-mono, monospace)',
-                        fontSize: '0.65rem',
-                        letterSpacing: '0.2em',
-                        textTransform: 'uppercase',
-                        color: p.route ? THEME_ACCENT[p.theme] : 'rgba(255,255,255,0.2)',
-                        opacity: p.route ? 0.65 : 1,
-                        paddingTop: '0.75rem',
-                        borderTop: '1px solid rgba(255,255,255,0.06)',
-                      }}
-                    >
-                      {p.route ? 'play' : 'planned'}
-                    </div>
-                  </>
-                )
-
-                return p.route ? (
-                  <Link
-                    key={p.id}
-                    href={p.route}
-                    onMouseEnter={() => setHoveredId(p.id)}
-                    onMouseLeave={() => setHoveredId(null)}
-                    style={cardStyle}
+                {/* Page header */}
+                <div style={{ textAlign: 'center', paddingTop: '6vh', paddingBottom: '5vh' }}>
+                  <p
+                    style={{
+                      fontFamily: "'Times New Roman', Times, serif",
+                      fontSize: '0.72rem',
+                      letterSpacing: '0.32em',
+                      textTransform: 'uppercase',
+                      color: 'rgba(0,190,210,0.32)',
+                      marginBottom: '0.6rem',
+                    }}
                   >
-                    {inner}
-                  </Link>
-                ) : (
+                    SSIP Exploratorium
+                  </p>
+                  <h1
+                    style={{
+                      fontFamily: "'Times New Roman', Times, serif",
+                      fontSize: 'clamp(2.2rem, 4vw, 3.4rem)',
+                      fontWeight: 'bold',
+                      fontStyle: 'italic',
+                      color: 'rgba(200,230,255,0.82)',
+                      lineHeight: 1,
+                      marginBottom: '0.85rem',
+                      letterSpacing: '0.04em',
+                    }}
+                  >
+                    puzzles
+                  </h1>
+                  <p
+                    style={{
+                      fontFamily: "'Times New Roman', Times, serif",
+                      fontSize: '0.95rem',
+                      fontStyle: 'italic',
+                      color: 'rgba(150,200,230,0.42)',
+                      letterSpacing: '0.06em',
+                      marginBottom: '2.5vh',
+                    }}
+                  >
+                    a collection of interactive challenges
+                  </p>
                   <div
-                    key={p.id}
-                    onMouseEnter={() => setHoveredId(p.id)}
-                    onMouseLeave={() => setHoveredId(null)}
-                    style={cardStyle}
-                  >
-                    {inner}
-                  </div>
-                )
-              })}
-            </div>
+                    style={{
+                      width: '120px',
+                      height: '1px',
+                      background: 'rgba(0,190,210,0.18)',
+                      margin: '0 auto',
+                    }}
+                  />
+                </div>
 
-          </div>
+                {/* Cards grid */}
+                <div
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(3, 1fr)',
+                    gap: '1.5rem',
+                    maxWidth: '980px',
+                    margin: '0 auto',
+                    padding: '0 2rem',
+                  }}
+                >
+                  {PUZZLES_DATA.map(p => {
+                    const hovered = hoveredId === p.id
+                    const cardStyle: React.CSSProperties = {
+                      background: hovered ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.025)',
+                      border: `1px solid ${hovered ? THEME_BORDER[p.theme] : 'rgba(255,255,255,0.06)'}`,
+                      borderRadius: '6px',
+                      padding: '1.5rem 1.4rem',
+                      cursor: p.route ? 'pointer' : 'default',
+                      transition: 'background 0.25s, border-color 0.25s, box-shadow 0.25s, transform 0.25s',
+                      transform: hovered ? 'translateY(-3px)' : 'translateY(0)',
+                      boxShadow: hovered
+                        ? `0 8px 32px ${THEME_GLOW[p.theme]}, 0 0 0 1px ${THEME_BORDER[p.theme]}`
+                        : 'none',
+                      textDecoration: 'none',
+                      display: 'block',
+                    }
+                    const inner = (
+                      <>
+                        <div style={{ marginBottom: '0.75rem' }}>
+                          <span
+                            style={{
+                              fontFamily: 'var(--font-geist-mono, monospace)',
+                              fontSize: '0.7rem',
+                              letterSpacing: '0.18em',
+                              color: THEME_ACCENT[p.theme],
+                              opacity: hovered ? 1 : 0.7,
+                              transition: 'opacity 0.25s',
+                            }}
+                          >
+                            {p.theme}
+                          </span>
+                        </div>
+
+                        <h2
+                          style={{
+                            fontFamily: 'var(--font-geist-mono, monospace)',
+                            fontSize: p.titleFontSize ?? '1.02rem',
+                            fontWeight: 600,
+                            color: hovered ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.72)',
+                            marginBottom: '0.65rem',
+                            lineHeight: 1.35,
+                            transition: 'color 0.25s',
+                            letterSpacing: '0.01em',
+                          }}
+                        >
+                          {p.titleParts
+                            ? <>{p.titleParts[0]}<strong>{p.titleParts[1]}</strong></>
+                            : p.title}
+                        </h2>
+
+                        <p
+                          style={{
+                            fontFamily: "'Times New Roman', Times, serif",
+                            fontSize: '0.92rem',
+                            fontStyle: 'italic',
+                            color: 'rgba(180,210,230,0.5)',
+                            lineHeight: 1.6,
+                            marginBottom: '1.1rem',
+                          }}
+                        >
+                          {p.desc}
+                        </p>
+
+                        <div
+                          style={{
+                            fontFamily: 'var(--font-geist-mono, monospace)',
+                            fontSize: '0.65rem',
+                            letterSpacing: '0.2em',
+                            textTransform: 'uppercase',
+                            color: p.route ? THEME_ACCENT[p.theme] : 'rgba(255,255,255,0.2)',
+                            opacity: p.route ? 0.65 : 1,
+                            paddingTop: '0.75rem',
+                            borderTop: '1px solid rgba(255,255,255,0.06)',
+                          }}
+                        >
+                          {p.route ? 'play' : 'planned'}
+                        </div>
+                      </>
+                    )
+
+                    return p.route ? (
+                      <Link
+                        key={p.id}
+                        href={p.route}
+                        onMouseEnter={() => setHoveredId(p.id)}
+                        onMouseLeave={() => setHoveredId(null)}
+                        style={cardStyle}
+                      >
+                        {inner}
+                      </Link>
+                    ) : (
+                      <div
+                        key={p.id}
+                        onMouseEnter={() => setHoveredId(p.id)}
+                        onMouseLeave={() => setHoveredId(null)}
+                        style={cardStyle}
+                      >
+                        {inner}
+                      </div>
+                    )
+                  })}
+                </div>
+
+              </div>
+            </>
+
+          )}
         </div>
 
       </div>
