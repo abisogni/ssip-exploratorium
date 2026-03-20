@@ -95,6 +95,33 @@ export default function MobilePuzzleMap() {
   const [selected, setSelected] = useState<PuzzlePin | null>(null)
   const router = useRouter()
 
+  // Pan to pin + lock/unlock map whenever selection changes
+  useEffect(() => {
+    const map = mapRef.current
+    if (!map) return
+
+    if (selected) {
+      // Snap pin to ~28% from left, ~42% from top — leaves right side clear for card
+      const size     = map.getSize()
+      const pinPoint = map.latLngToContainerPoint([selected.lat, selected.lng])
+      const targetX  = size.x * 0.28
+      const targetY  = size.y * 0.42
+      map.panBy([pinPoint.x - targetX, pinPoint.y - targetY], { animate: true, duration: 0.35 })
+
+      map.dragging.disable()
+      map.touchZoom.disable()
+      map.scrollWheelZoom.disable()
+      map.doubleClickZoom.disable()
+      map.keyboard.disable()
+    } else {
+      map.dragging.enable()
+      map.touchZoom.enable()
+      map.scrollWheelZoom.enable()
+      map.doubleClickZoom.enable()
+      map.keyboard.enable()
+    }
+  }, [selected])
+
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return
 
@@ -109,6 +136,7 @@ export default function MobilePuzzleMap() {
         zoom: 14,
         zoomControl: false,
         attributionControl: true,
+        touchZoom: true,
       })
 
       // CartoDB Voyager — closest free alternative to Google Maps style
@@ -157,7 +185,7 @@ export default function MobilePuzzleMap() {
       {/* Leaflet map container */}
       <div ref={containerRef} style={{ width: '100%', height: '100%' }} />
 
-      {/* Expanded card overlay */}
+      {/* Expanded card — dismisses on backdrop tap, navigates on card tap */}
       {selected && (
         <div
           onClick={() => setSelected(null)}
@@ -165,33 +193,33 @@ export default function MobilePuzzleMap() {
             position: 'absolute',
             inset: 0,
             zIndex: 1000,
-            background: 'rgba(0,0,0,0.45)',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-end',
-            padding: '1.25rem',
+            background: 'rgba(0,0,0,0.30)',
           }}
         >
-          {/* Card — stopPropagation so tapping inside doesn't dismiss */}
+          {/* Card floats in upper portion of right half */}
           <div
             onClick={e => {
               e.stopPropagation()
               if (selected.route) router.push(selected.route)
             }}
             style={{
+              position: 'absolute',
+              right: '1rem',
+              top: '26%',
+              width: '54%',
               background: 'rgba(4,6,15,0.97)',
               border: `1px solid ${THEME_BORDER[selected.theme]}`,
               borderRadius: '12px',
-              padding: '1.4rem 1.3rem 1.3rem',
+              padding: '1.1rem 1rem 1rem',
               cursor: selected.route ? 'pointer' : 'default',
-              boxShadow: `0 -8px 40px ${THEME_GLOW[selected.theme]}, 0 0 0 1px ${THEME_BORDER[selected.theme]}`,
+              boxShadow: `0 6px 36px ${THEME_GLOW[selected.theme]}, 0 0 0 1px ${THEME_BORDER[selected.theme]}`,
             }}
           >
-            <div style={{ marginBottom: '0.55rem' }}>
+            <div style={{ marginBottom: '0.5rem' }}>
               <span
                 style={{
                   fontFamily: 'var(--font-geist-mono, monospace)',
-                  fontSize: '0.65rem',
+                  fontSize: '0.6rem',
                   letterSpacing: '0.18em',
                   color: THEME_ACCENT[selected.theme],
                 }}
@@ -203,11 +231,11 @@ export default function MobilePuzzleMap() {
             <h2
               style={{
                 fontFamily: 'var(--font-geist-mono, monospace)',
-                fontSize: '1rem',
+                fontSize: '0.88rem',
                 fontWeight: 600,
                 color: 'rgba(255,255,255,0.95)',
                 lineHeight: 1.3,
-                margin: '0 0 0.6rem 0',
+                margin: '0 0 0.55rem 0',
               }}
             >
               {selected.titleParts
@@ -218,11 +246,11 @@ export default function MobilePuzzleMap() {
             <p
               style={{
                 fontFamily: "'Times New Roman', Times, serif",
-                fontSize: '0.9rem',
+                fontSize: '0.82rem',
                 fontStyle: 'italic',
                 color: 'rgba(180,210,230,0.55)',
-                lineHeight: 1.6,
-                margin: '0 0 1rem 0',
+                lineHeight: 1.55,
+                margin: '0 0 0.85rem 0',
               }}
             >
               {selected.desc}
@@ -231,11 +259,11 @@ export default function MobilePuzzleMap() {
             <div
               style={{
                 fontFamily: 'var(--font-geist-mono, monospace)',
-                fontSize: '0.62rem',
+                fontSize: '0.58rem',
                 letterSpacing: '0.2em',
                 textTransform: 'uppercase',
                 color: selected.route ? THEME_ACCENT[selected.theme] : 'rgba(255,255,255,0.2)',
-                paddingTop: '0.7rem',
+                paddingTop: '0.65rem',
                 borderTop: '1px solid rgba(255,255,255,0.06)',
               }}
             >
