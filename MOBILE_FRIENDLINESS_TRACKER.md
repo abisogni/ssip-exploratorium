@@ -1,9 +1,9 @@
-# Mobile Friendliness Tracker - SSIP Exploratorium
+# Mobile Friendliness Tracker - SSIP Universium
 
 Last updated: 2026-03-14 (Dev Branch completed)
 
 ## Overview
-This tracker documents the progress of making all pages in the SSIP Exploratorium subdomain mobile-friendly. Work can be done across sessions and on either MacBook or Mac Mini.
+This tracker documents the progress of making all pages in the SSIP Universium subdomain mobile-friendly. Work can be done across sessions and on either MacBook or Mac Mini.
 
 ## Status Legend
 - ✅ Complete - Mobile-friendly

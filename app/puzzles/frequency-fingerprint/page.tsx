@@ -506,7 +506,7 @@ function Gallery({
       {/* Page header */}
       <div style={{ textAlign: 'center', paddingTop: '5vh', paddingBottom: '4vh' }}>
         <p style={{ fontFamily: SERIF, fontStyle: 'italic', fontSize: '0.72rem', letterSpacing: '0.3em', color: 'rgba(210,158,32,0.32)', marginBottom: '0.6rem' }}>
-          SSIP Exploratorium · CRYPTO
+          SSIP Universium · CRYPTO
         </p>
         <h1 style={{ fontFamily: SERIF, fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 'bold', fontStyle: 'italic', color: 'rgba(240,220,170,0.85)', lineHeight: 1, marginBottom: '0.8rem', letterSpacing: '0.03em' }}>
           Frequency Fingerprint

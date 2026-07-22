@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "The Exploratorium — SSIP",
+  title: "The Universium — SSIP",
   description: "An experimental space for projects, prototypes, and ideas from the SSIP community.",
 };
 

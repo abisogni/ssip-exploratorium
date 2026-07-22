@@ -9,7 +9,7 @@ const INSTITUTIONS = [
 ]
 
 const HEADERS = {
-  'User-Agent': 'SSIP-Exploratorium/1.0 (contact@ssip-pl.ch)',
+  'User-Agent': 'SSIP-Universium/1.0 (contact@ssip-pl.ch)',
 }
 
 function reconstructAbstract(invertedIndex: Record<string, number[]> | null | undefined): string {

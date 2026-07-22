@@ -1,4 +1,4 @@
-# Exploratorium — Puzzles Page Concepts
+# Universium — Puzzles Page Concepts
 
 Tracking doc for interactive puzzle games. Each entry includes concept, mechanics, tech notes, and build status.
 

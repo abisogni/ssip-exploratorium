@@ -10,11 +10,11 @@ export const revalidate = 21600
 
 const SSIP_POSTS: FeedPost[] = [
   {
-    title: "The Exploratorium Is Live — SSIP's New Experimental Web Space",
-    excerpt: 'The Swiss Space Innovation Platform has launched the Exploratorium, an open platform for experimental tools, interactive data visualisations, and team-driven projects. Access is open to SSIP members and the broader community.',
+    title: "The Universium Is Live — SSIP's New Experimental Web Space",
+    excerpt: 'The Swiss Space Innovation Platform has launched the Universium, an open platform for experimental tools, interactive data visualisations, and team-driven projects. Access is open to SSIP members and the broader community.',
     date: 'Feb 27, 2026',
     source: 'SSIP',
-    url: 'https://exploratorium.ssip-pl.ch',
+    url: 'https://universium.ssip-pl.ch',
   },
   {
     title: 'SSIP Annual Conference 2026 — Call for Submissions Now Open',

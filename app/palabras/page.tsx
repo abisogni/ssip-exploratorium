@@ -170,7 +170,7 @@ export default function Palabras() {
           }}
         >
           <p className="text-xs tracking-[0.4em] uppercase mb-5" style={{ color: 'rgba(100,160,255,0.45)' }}>
-            SSIP &mdash; Exploratorium
+            SSIP &mdash; Universium
           </p>
           <h1 className="font-mono font-bold text-white" style={{ fontSize: 'clamp(2.8rem, 8vw, 5rem)' }}>
             {display}
@@ -244,7 +244,7 @@ export default function Palabras() {
           }}
         >
           <p className="text-xs tracking-[0.4em] uppercase mb-5" style={{ color: 'rgba(100,160,255,0.45)' }}>
-            SSIP &mdash; Exploratorium
+            SSIP &mdash; Universium
           </p>
           <h1
             className="font-mono font-bold text-white"
@@ -309,7 +309,7 @@ export default function Palabras() {
               }}
             >
               <span style={{ fontSize: '1.2rem' }}>←</span>
-              <span>back to Exploratorium space</span>
+              <span>back to Universium space</span>
             </Link>
 
             {/* Page header */}
@@ -324,7 +324,7 @@ export default function Palabras() {
                   marginBottom: '0.6rem',
                 }}
               >
-                SSIP Exploratorium
+                SSIP Universium
               </p>
               <h1
                 style={{

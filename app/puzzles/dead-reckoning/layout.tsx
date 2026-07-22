@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Dead Reckoning — Exploratorium',
+  title: 'Dead Reckoning — Universium',
 }
 
 export default function Layout({ children }: { children: React.ReactNode }) {

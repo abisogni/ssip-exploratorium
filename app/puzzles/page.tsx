@@ -235,7 +235,7 @@ export default function Puzzles() {
             onMouseEnter={e => (e.currentTarget.style.color = 'rgba(0,210,230,0.9)')}
             onMouseLeave={e => (e.currentTarget.style.color = 'rgba(0,190,210,0.45)')}
           >
-            <span style={{ fontSize: '1.1rem' }}>←</span> Exploratorium
+            <span style={{ fontSize: '1.1rem' }}>←</span> Universium
           </Link>
 
           <p
@@ -248,7 +248,7 @@ export default function Puzzles() {
               marginBottom: '1.6rem',
             }}
           >
-            SSIP &mdash; Exploratorium
+            SSIP &mdash; Universium
           </p>
 
           {/* Per-letter dissolve title */}
@@ -342,7 +342,7 @@ export default function Puzzles() {
                   onTouchStart={e => (e.currentTarget.style.color = 'rgba(0,210,230,1)')}
                   onTouchEnd={e => (e.currentTarget.style.color = 'rgba(0,190,210,0.7)')}
                 >
-                  <span style={{ fontSize: '1rem' }}>←</span> Exploratorium
+                  <span style={{ fontSize: '1rem' }}>←</span> Universium
                 </Link>
                 <span
                   style={{
@@ -406,7 +406,7 @@ export default function Puzzles() {
                   onMouseLeave={e => (e.currentTarget.style.color = 'rgba(0,190,210,0.6)')}
                 >
                   <span style={{ fontSize: '1.2rem' }}>←</span>
-                  <span>back to Exploratorium space</span>
+                  <span>back to Universium space</span>
                 </Link>
 
                 {/* Page header */}
@@ -421,7 +421,7 @@ export default function Puzzles() {
                       marginBottom: '0.6rem',
                     }}
                   >
-                    SSIP Exploratorium
+                    SSIP Universium
                   </p>
                   <h1
                     style={{

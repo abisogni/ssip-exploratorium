@@ -1,7 +1,7 @@
 import { getEvents } from '@/lib/events'
 import SignalArchiveMobile from './SignalArchiveMobile'
 
-export const metadata = { title: 'event_log — The Exploratorium' }
+export const metadata = { title: 'event_log — The Universium' }
 export const dynamic   = 'force-dynamic'
 
 export default async function EventLogPage() {

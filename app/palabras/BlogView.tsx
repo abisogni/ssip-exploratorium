@@ -89,7 +89,7 @@ export default function BlogView({ topic, onBack }: Props) {
             color: 'rgba(200,155,50,0.35)',
             marginBottom: '0.5rem',
           }}>
-            palabras &mdash; the exploratorium
+            palabras &mdash; the universium
           </p>
           <h1 style={{
             fontFamily: "'Times New Roman', Times, serif",

@@ -1,5 +1,5 @@
 export const metadata = {
-  title: 'afkkwpd — The Exploratorium',
+  title: 'afkkwpd — The Universium',
 }
 
 export default function Afkkwpd() {
@@ -7,7 +7,7 @@ export default function Afkkwpd() {
     <main className="min-h-screen bg-black text-white flex flex-col items-center justify-center px-6">
       <div className="max-w-xl w-full text-center space-y-6">
         <p className="text-xs tracking-[0.4em] uppercase" style={{ color: 'rgba(100,160,255,0.5)' }}>
-          SSIP — Exploratorium
+          SSIP — Universium
         </p>
         <h1 className="text-5xl font-bold tracking-[0.25em] lowercase">afkkwpd</h1>
         <p className="text-base" style={{ color: 'rgba(255,255,255,0.3)' }}>

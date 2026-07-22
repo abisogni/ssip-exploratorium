@@ -185,7 +185,7 @@ export default function SignalFromDeepSpace() {
 
         <div style={{ maxWidth: '540px', width: '100%', border: '1px solid rgba(0,190,210,0.16)', borderRadius: '4px', padding: '2.5rem 2.4rem 2.2rem', background: 'rgba(0,30,50,0.28)' }}>
           <p style={{ fontFamily: MONO, fontSize: '0.68rem', letterSpacing: '0.34em', color: 'rgba(0,190,210,0.4)', marginBottom: '0.5rem' }}>
-            SSIP EXPLORATORIUM
+            SSIP UNIVERSIUM
           </p>
           <h1 style={{ fontFamily: MONO, fontSize: 'clamp(1.3rem, 3vw, 1.8rem)', fontWeight: 700, color: 'rgba(255,255,255,0.9)', letterSpacing: '0.06em', marginBottom: '0.3rem' }}>
             SIGNAL DETECTED

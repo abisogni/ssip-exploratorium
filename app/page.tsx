@@ -25,7 +25,7 @@ export default function Home() {
               '0 0 60px rgba(80,140,255,0.45), 0 0 20px rgba(80,140,255,0.2)',
           }}
         >
-          The Exploratorium
+          The Universium
         </h1>
         <p
           className="mt-5 text-xs tracking-[0.3em] uppercase"

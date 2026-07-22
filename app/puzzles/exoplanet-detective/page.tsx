@@ -347,7 +347,7 @@ export default function ExoplanetDetective() {
             fontSize: '0.72rem', letterSpacing: '0.28em', textTransform: 'uppercase',
             color: ACCENT_MED, marginBottom: '1rem',
           }}>
-            SSIP Exploratorium — Space
+            SSIP Universium — Space
           </p>
 
           <h1 style={{

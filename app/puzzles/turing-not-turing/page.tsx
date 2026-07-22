@@ -374,7 +374,7 @@ export default function TuringNotTuring() {
     return (
       <div style={{ textAlign: 'center', maxWidth: '520px', margin: '0 auto', padding: '0 1.5rem' }}>
         <p style={{ fontFamily: MONO, fontSize: '0.68rem', letterSpacing: '0.32em', color: 'rgba(0,190,210,0.45)', marginBottom: '0.7rem' }}>
-          SSIP EXPLORATORIUM — AI
+          SSIP UNIVERSIUM — AI
         </p>
         <h1
           style={{

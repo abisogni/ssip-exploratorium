@@ -1,7 +1,7 @@
-# Exploratorium — Claude Code Context
+# Universium — Claude Code Context
 
-Live at **https://exploratorium.ssip-pl.ch**
-GitHub: **abisogni/ssip-exploratorium** (push to `main` → auto-deploys via Vercel)
+Live at **https://universium.ssip-pl.ch**
+GitHub: **abisogni/ssip-universium** (push to `main` → auto-deploys via Vercel)
 
 ## Stack
 
@@ -83,9 +83,28 @@ Placeholder posts per topic (3 each). All topics populated.
 
 ---
 
+## event_log page
+
+**Full build plan:** `EVENT_LOG.md` in this directory — read it at the start of any session working on event_log.
+
+**Design:** Signal Archive interface (spectrum analyzer aesthetic).
+- Desktop (≥768px): frequency spectrum + waveform canvas + sidebar panel
+- Mobile (<768px): spectrum top half + rotary dial (iPod-style) + lock/slide mechanic
+
+**Approved mockups:**
+- `WideSpan/SSIP/event-log-concepts/mockup-signal-archive.html` — desktop
+- `WideSpan/SSIP/event-log-concepts/mockup-signal-archive-mobile.html` — mobile
+
+**Data:** MongoDB `events` collection — seed data + schema in `EVENT_LOG.md`.
+
+**Current state:** `app/event_log/page.tsx` is a placeholder ("records pending"). Nothing built yet.
+
+---
+
 ## Next steps (not yet built)
 
-- Wire real content feeds per topic (RSS aggregation or CMS)
-- Mobile scroll-reveal (currently just a fade-in)
+- **event_log** — full implementation (see `EVENT_LOG.md`)
+- Wire real content feeds per topic in palabras (RSS aggregation or CMS)
+- Mobile scroll-reveal on palabras (currently just a fade-in)
 - Card back-face / flip animation on click before blog opens
 - Consider adding more tarot cards for future topic expansions

@@ -518,12 +518,12 @@ export default function SpaceApis() {
           <p style={{ color: GH.textMuted, fontSize: 12, marginTop: 16 }}>
             {APIS.length} APIs listed &mdash; submit additions via the{' '}
             <a
-              href="https://github.com/abisogni/ssip-exploratorium"
+              href="https://github.com/abisogni/ssip-universium"
               target="_blank"
               rel="noopener noreferrer"
               style={{ color: GH.link, textDecoration: 'none' }}
             >
-              ssip-exploratorium repo
+              ssip-universium repo
             </a>
             .
           </p>
